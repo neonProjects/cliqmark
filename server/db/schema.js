@@ -149,8 +149,8 @@ var removeBookmark = function(bookmarkId, callback) {
   })
 };
 
-// callback has (err) argument, only passed when error occurs
-var addTag = function(tagName, bookmark, callback) {
+//finds or creates a tag, and adds a join to the bookmark ID
+var addTag = function(tagName, bookmarkId, callback) {
   Tag.findOrCreate({ where: { tagName: tagname }}).success(function(tag, created) {
     tag.addBookmark(bookmark, { where: { bookmarkId: bookmarkId }}).then(function(tag) {
       if (!tag) {
