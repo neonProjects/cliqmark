@@ -46,6 +46,7 @@ var Tag = sequelize.define('tags', {
 sequelize.sync();
 
 //CREATE RELATIONS
+
 //Bookmarks have one user, users have many bookmarks
 Bookmark.hasOne(User);
 //Bookmarks have many tags, and tags have many bookmarks
@@ -129,7 +130,7 @@ var getBookmarks = function(userId, callback) {
       callback(null, bookmarks);
     } else {
       callback(function() {
-        console.log("We didn't find any bookmarks");
+        console.log("We didn't find any bookmarks.");
       });
     }
   })
@@ -141,7 +142,7 @@ var removeBookmark = function(bookmarkId, callback) {
     bookmark.destroy().then(function() {
       if (bookmark) {
         callback(function() {
-          console.log("Could not delete bookmark");
+          console.log("Could not delete bookmark.");
         })
       }
     })
@@ -149,18 +150,27 @@ var removeBookmark = function(bookmarkId, callback) {
 };
 
 // callback has (err) argument, only passed when error occurs
-var addTag = function(tagName, bookmarkId, callback) {
-  Bookmark.addTag('tag', { tagname: tagName})
+var addTag = function(tagName, bookmark, callback) {
+  Tag.findOrCreate({ where: { tagName: tagname }}).success(function(tag, created) {
+    tag.addBookmark(bookmark, { where: { bookmarkId: bookmarkId }}).then(function(tag) {
+      if (!tag) {
+        callback(function() {
+          console.log("Could not add tag.")
+        })
+      } else {
+        callback(null, tag.tagName)
+      }
+    }
+  })
 };
 
-//  callback has (err, tagId) arguments
+//  callback has (err) arguments
 var removeTag = function(tagName, bookmarkId, callback) {
-
+  Tag.findOne({ where: { tagName: tagName } }).then(function(tag) {
+    tag.destroy().then(function() {
+      if (tag) {
+        console.log("Could not remove tag.")
+      } else
+    });
+  });
 };
-
-// callback has (err) arguments
-
-var hash = function(password) {
-  //run the password through bcrypt
-  //return the hashed password
-}
