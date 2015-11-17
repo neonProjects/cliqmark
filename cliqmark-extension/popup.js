@@ -2,20 +2,36 @@ document.addEventListener('DOMContentLoaded', function() {
 
   var loginSignupButton = document.getElementById('login-signup');
   loginSignupButton.addEventListener('click', function() {
-    //real action here
-    console.log('login or signup');
+    //this shows our button lister is working
+    chrome.tabs.executeScript({
+      code: 'document.body.style.backgroundColor="red"'
+    });
+    //send GET request for cliqmark login / signup page
   }, false);
   
   var addBookmarkButton = document.getElementById('addBookmark');
   addBookmarkButton.addEventListener('click', function() {
-    //
-    console.log('adding bookmark');
+    //this shows our button lister is working
+    chrome.tabs.executeScript({
+      code: 'document.body.style.backgroundColor="blue"'
+    });
+    //send POST reqest with info from current page
+    // var xhr = new XMLHttpRequest();
+    // xhr.open('POST', 'http://0.0.0.0:3000/bookmark', true);
+    // xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+
+    // // send the collected data as JSON
+    // xhr.send(JSON.stringify({ url: tab.url }));
+
   }, false);
 
   var getBookmarksButton = document.getElementById('getBookmarks');
   getBookmarksButton.addEventListener('click', function() {
-    //
-    console.log('getting bookmarks');
+    //this shows our button lister is working
+    chrome.tabs.executeScript({
+      code: 'document.body.style.backgroundColor="green"'
+    });
+    //send GET request for cliqmark "bookmarks" page
   }, false);
 
 }, false);

@@ -1,16 +1,17 @@
 {
-  "manifest_version": 2,
 
   "name": "cliqmark plugin",
   "description": "bookmark manager",
   "version": "1.0",
 
+  "permissions": [
+   "activeTab"
+  ],
+  
   "browser_action": {
    "default_icon": "icon.png",
    "default_popup": "popup.html"
   },
   
-  "permissions": [
-   "activeTab"
-   ]
+  "manifest_version": 2
 }
