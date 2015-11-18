@@ -1,16 +1,34 @@
 <!-- todo: work on presentation / layout of this -->
-<div id='container'>
+<div id="container">
+
+  <div class="header">
+    
+    <div class="logo">
+      <h1>CliqMark</h1>
+    </div>
+
+
+    <div class="logout">
+      <a href="localhost:3000/logout">logout</a> <!-- -->
+    </div>
   
-  <input type="text" ng-model="search" placeholder="filter"/>
-
-  <ul class="bookmarkslist" ng-controller="BookmarksController">
-
-    <li class="individualBookmark" ng-repeat="bookmark in data.bookmarks | filter:search | orderBy:'created_at'">      
+  </div>
+  
+  
+  <div class="bookmarkslist" ng-controller="BookmarksController">
+    <div class="searchbar">
+      <input type="text" ng-model="search" placeholder="filter"/>
+    </div>
+    <div class="individualBookmark" ng-repeat="bookmark in data.bookmarks | filter:search | orderBy:'created_at'">      
       <div class="info">        
-        <a href="{{bookmark.url}}"> {{bookmark.title}} </a>
-        <!-- <img src="<image of page here>" /> -->
+        <a href="{{bookmark.url}}" target="_blank"> 
+          <!--todo: fix this hard coding -->
+          <span class="title">{{bookmark.title.slice(0,25) || bookmark.url.slice(7,32)}}</span>
+          <img class="snapshot" src="shots/3b92f4e3e80db94fea62d75269a17ace.png" />
+        </a>
       </div>
-    </li>
+    </div>
+  </div>
+  
 
-  </ul>
 </div>
