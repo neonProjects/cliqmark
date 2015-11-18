@@ -79,20 +79,20 @@ exports.getPageSnapshot = function(url, snapshotPath) {
       requestTimeout: 300
   };
 
-  urlToImage(url, snapshotPath + id + '.org.png', options)
+  urlToImage(url, snapshotPath + '.org.png', options)
   .then(function() {
     console.log('snapshot taken');
 
     easyimg.crop({
-      src: snapshotPath + id + '.org.png', dst:snapshotPath + id + '.1280.png',
+      src: snapshotPath + '.org.png', dst:snapshotPath + '.1280.png',
       cropwidth:1280, cropheight:1280,
       gravity: 'North',
       x:0, y:0
     })
     .then(function(image) {
       easyimg.resize({
-        src:snapshotPath + id + '.1280.png',
-        dst:snapshotPath + id + '.png',
+        src:snapshotPath + '.1280.png',
+        dst:snapshotPath,
         width:400,
         height:400
       })
@@ -118,8 +118,10 @@ exports.isLoggedIn = function(req, res) {
 
 exports.checkUser = function(req, res, next) {
   if (!exports.isLoggedIn(req)) {
+    console.log('failed to auth');
     res.redirect('/login');
   } else {
+    console.log('authenticated');
     next();
   }
 };
@@ -127,6 +129,6 @@ exports.checkUser = function(req, res, next) {
 exports.createSession = function(req, res, newUser) {
   return req.session.regenerate(function() {
       req.session.user = newUser;
-      res.redirect('/');
+      // res.redirect('/');
     });
 };
