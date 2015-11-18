@@ -1,6 +1,5 @@
-
-var crypto = require('crypto');
-var bcrypt = require('bcrypt-nodejs');
+var fs = require('fs');
+var md5 = require('md5');
 var util = require('./utility');
 
 var db = require('./db/schema');
@@ -9,6 +8,34 @@ var config = {
   shotpath: './server/shots/',
 };
 
+
+exports.getImage = function(req, res) {
+
+  var options = {
+    root: __dirname + '/shots',
+    dotfiles: 'deny',
+    headers: {
+        'x-timestamp': Date.now(),
+        'x-sent': true
+    }
+  };
+
+  var fileName = req.params.code;
+  console.log(fileName);
+
+  // fs.readFile(config.shotpath + fileName, function(err, data){
+  //   console.log(md5(data));
+  // });
+  res.sendFile(fileName, options, function (err) {
+    if (err) {
+      console.log(err);
+      res.sendFile('no_screenshot.png', options);
+    }
+    else {
+      console.log('Sent:', fileName);
+    }
+  });
+};
 
 exports.signupUserForm = function(req, res) {
   // show signup form
@@ -43,6 +70,12 @@ exports.getBookmarks = function(req, res) {
 exports.addBookmark = function(req, res) {
   var url = req.body.url;
   var userId = req.body.userId;
+
+  console.log(url);
+  console.log(userId);
+
+  if (!url) { return res.status(401).send('no url'); }
+  if (!url) { return res.status(401).send('no user'); }
 
   if (!util.isValidUrl(url)) {
     console.log('Not a valid url: ', url);
