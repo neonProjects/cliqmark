@@ -45,46 +45,58 @@ var Tag = sequelize.define('tags', {
   }
 });
 
-//create the tables if they don't exist
-sequelize.sync();
 
 //CREATE RELATIONS
 
 //Bookmarks have one user, users have many bookmarks
-Bookmark.hasOne(User);
+User.hasMany(Bookmark);
+Bookmark.belongsTo(User);
+// Bookmark.hasOne(User);
 //Bookmarks have many tags, and tags have many bookmarks
 Bookmark.belongsToMany(Tag, { through: "BookmarkTags" });
 Tag.belongsToMany(Bookmark, { through: "BookmarkTags" });
 
+//create the tables if they don't exist
+sequelize.sync();
 
 //////////////////////////////////////////
 //HELPER FUNCTIONS FOR QUERYING DATABASE//
 //////////////////////////////////////////
 
 //check if user exists, and create a new user with a hashed password
-var createUser = function(user, pw, callback) {
-  User.findOne({ where: { username: user } })
-  .success(function(user) {
-    if (user) {
+exports.createUser = function(username, password, callback) {
+  User.findAll({ where: { username: username } })
+  .then(function(user) {
+    console.log(user.length);
+    if (user.length > 0) {
       callback("Username already taken");
     } else {
-      return bcrypt.hash(pw, null, null).then(function(hash) {
-        User.create({ username: user, password: hash }).success(function(user) {
-          if (user) {
-            callback(null, user.userId);
+      bcrypt.hash(password, null, null, function(err, hash) {
+        console.log(hash);
+        User.create({ username: username, password: hash }).then(function(usr) {
+          console.log(usr.dataValues.id);
+          if (usr) {
+            callback(null, usr.dataValues.id);
           } else {
             callback("Unable to create user.");
           }
+        })
+        .catch(function(err) {
+          console.log('create: ' + err);
         });
       });
     }
+  })
+  .catch(function (err) {
+    console.log('find: ' + err);
   });
 
 };
 
 //Check if user exists, check if password is correct, and pass a boolean to the callback
-var authUser = function(user, password, callback) {
-  User.findOne({ where: { username: user } }).success(function(user) {
+exports.authUser = function(user, password, callback) {
+  User.findOne({ where: { username: user } })
+  .then(function(user) {
     if (!user) {
       callback("Incorrect username or password.");
     } else {
@@ -92,7 +104,11 @@ var authUser = function(user, password, callback) {
         if (err) {
           callback(err);
         } else {
-          callback(null, passwordMatch);
+          if (passwordMatch) {
+            callback(null, user.id);
+          } else {
+            callback('wrong password');
+          }
         }
       });
     }
@@ -100,15 +116,16 @@ var authUser = function(user, password, callback) {
 };
 
 //check if bookmark exists, and create a new bookmark
-var createBookmark = function(userId, title, url, snapshotUrl, baseUrl, text, callback) {
-  Bookmark.findOrCreate({
+exports.createBookmark = function(userId, title, url, snapshotUrl, baseUrl, text, callback) {
+  Bookmark.findOrCreate({ where: { url: url }, defaults: {
     userId: userId,
     title: title,
     url: url,
     snapshotUrl: snapshotUrl,
     baseUrl: baseUrl,
     text: text
-  }).success(function(bookmark, created) {
+    }
+  }).spread(function(bookmark, created) {
     if (created) {
       callback(null, bookmark.bookmarkId);
     } else {
@@ -118,8 +135,9 @@ var createBookmark = function(userId, title, url, snapshotUrl, baseUrl, text, ca
 };
 
 //get all bookmarks with a the logged in users ID
-var getBookmarks = function(userId, callback) {
-  Bookmark.findAll({ where: { userId: userId } }).then(function(bookmarks) {
+exports.getBookmarks = function(userId, callback) {
+  Bookmark.findAll({ where: { userId: userId } })
+  .then(function(bookmarks) {
     if (bookmarks.length) {
       callback(null, bookmarks);
     } else {
@@ -129,40 +147,42 @@ var getBookmarks = function(userId, callback) {
 };
 
 //remove a bookmark with the given bookmark ID
-var removeBookmark = function(bookmarkId, callback) {
-  Bookmark.findOne({ where: { bookmarkId: bookmarkId } })
+exports.removeBookmark = function(bookmarkId, callback) {
+  Bookmark.findOne({ where: { id: bookmarkId } })
   .then(function(bookmark) {
-    bookmark.destroy()
-    .then(function() {
-      if (bookmark) {
-        callback("Could not delete bookmark.");
-      }
-    });
+    if (!bookmark) {
+      callback("Could not find bookmark.");
+    } else {
+      bookmark.destroy()
+      .then(function() {
+        callback();
+      });
+    }
   });
 };
 
 //finds or creates a tag, and adds a join to the bookmark ID
-var addTag = function(tagName, bookmarkId, callback) {
-  Tag.findOrCreate({ where: { tagName: tagname } })
-  .success(function(tag, created) {
-    tag.addBookmark(bookmark, { where: { bookmarkId: bookmarkId } })
-    .then(function(tag) {
-      if (!tag) {
-        callback("Could not add tag.");
-      } else {
-        callback(null, tag.tagName);
-      }
-    });
+exports.addTag = function(tagName, bookmarkId, callback) {
+  Bookmark.findOne({ where: { id: bookmarkId } })
+  .then(function(bookmark) {
+    if (!bookmark) {
+      console.log('bm not found');
+      callback('bookmark not found');
+    } else {
+      Tag.findOrCreate({ where: { tagName: tagName } })
+      .then(function(tag, created) {
+        bookmark.addTag(tag[0]);
+        callback(null, tag[0].id);
+      });
+    }
   });
 };
 
 //finds a tag and removes it from the join table
-var removeTag = function(tagId, bookmarkId, callback) {
-  BookmarkTags.findOne({ where: { tagId: tagId, bookmarkId: bookmarkId } }).then(function(tag) {
-    tag.destroy().then(function() {
-      if (tag) {
-        callback("Could not remove tag.");
-      }
-    });
+exports.removeTag = function(tagId, bookmarkId, callback) {
+  var query = "DELETE FROM BookmarkTags WHERE bookmarkId = " + bookmarkId + " AND tagId = " + tagId + ";";
+
+  sequelize.query(query).spread(function(results) {
+    callback();
   });
 };

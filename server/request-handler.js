@@ -29,7 +29,8 @@ exports.logoutUser = function(req, res) {
 };
 
 exports.getBookmarks = function(req, res) {
-  var userId = req.body.userId;
+  var userId = req.query.userId;
+
   db.getBookmarks(userId, function(err, bookmarks) {
     if (err) {
       res.status(401).send(err);
@@ -84,7 +85,7 @@ exports.addTag = function(req, res) {
     } else {
       var bmTag = {
         bookmarkId: bookmarkId,
-        tagId: TagId
+        tagId: tagId
       };
       res.status(200).send(bmTag);
     }
@@ -93,10 +94,10 @@ exports.addTag = function(req, res) {
 
 exports.deleteTag = function(req, res) {
   var tagId = req.body.tagId;
-  var tagName = req.body.tagName;
+  // var tagName = req.body.tagName;
   var bookmarkId = req.body.bookmarkId;
 
-  db.removeTag(tagName, bookmarkId, function(err) {
+  db.removeTag(tagId, bookmarkId, function(err) {
     if (err) {
       res.status(401).send(err);
     } else {
@@ -124,7 +125,7 @@ exports.loginUser = function(req, res) {
 };
 
 exports.signupUser = function(req, res) {
-  console.log(req);
+  console.log(req.body);
   var username = req.body.username;
   var password = req.body.password;
 
@@ -136,6 +137,7 @@ exports.signupUser = function(req, res) {
         userId: userId,
         username: username
       };
+      console.log(user);
       util.createSession(req, res, user);
       res.status(200).send(user);
     }
