@@ -1,0 +1,15 @@
+<div id='container'>
+  
+  <input type="text" ng-model="search" placeholder="filter"/>
+
+  <ul class="bookmarkslist" ng-controller="BookmarksController">
+
+    <li class="individualBookmark" ng-repeat="bookmark in data.bookmarks | filter:search | orderBy:'created_at'">      
+      <div class="info">        
+        <a href="{{bookmark.url}}"> {{bookmark.title}} </a>
+        <!-- <img src="<image of page here>" /> -->
+      </div>
+    </li>
+
+  </ul>
+</div>
