@@ -26,6 +26,7 @@ app.factory('Bookmarks', function() {
       {id: 5, url: 'http://www.hackreactor.com', title: 'hackreactor'},
       {id: 6, url: 'http://www.wm.edu', title: 'w&m'}
     ];
+    //todo: make real call to DB, something like this
     // return $http({
     //   method:'GET',
     //   url: '/api/links'
@@ -43,6 +44,7 @@ app.factory('Bookmarks', function() {
 app.controller('BookmarksController', function($scope, Bookmarks) {
   $scope.data = {};
   $scope.getBookmarks = function() {
+    //todo: replace this fake data with real call to DB
     var data = Bookmarks.getData();
     $scope.data.bookmarks = data;
     // Bookmarks.getData()
