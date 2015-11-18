@@ -18,6 +18,7 @@
   "homepage": "https://github.com/ahmetcetin/cliqmark#readme",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
+    "bluebird": "^3.0.5",
     "cheerio": "^0.19.0",
     "easyimage": "^2.1.0",
     "express": "^4.13.3",
@@ -26,6 +27,7 @@
     "passport": "^0.3.2",
     "request": "^2.65.0",
     "sanitize-html": "^1.11.1",
+    "sequelize": "^3.13.0",
     "url-to-image": "^1.0.0"
   }
 }
