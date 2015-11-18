@@ -1,24 +1,25 @@
 var Sequelize = require('sequelize');
-var sequelize = new Sequelize('cliqmark', 'username', 'password', {
-  host: process.ENV.port
-});
+
+// empty database should be created manually in mysql. this also assumes username is root without password
+var sequelize = new Sequelize('cliqmark', 'root', null, {});
 var Promise = require('bluebird');
 var bcrypt = require('bcrypt-nodejs');
 
 //create a Users table
 var User = sequelize.define('users', {
-  userId: Sequelize.UUID,
+  // userId: Sequelize.UUID,
   username: {
     type: Sequelize.STRING,
     allowNull: false,
     unique: true
   },
+  // username: Sequelize.STRING,
   password: Sequelize.STRING
 });
 
 //create a Bookmarks table
 var Bookmark = sequelize.define('bookmarks', {
-  bookmarkId: Sequelize.UUID,
+  // bookmarkId: Sequelize.UUID,
   title: Sequelize.STRING,
   url: {
     type: Sequelize.STRING,
@@ -28,13 +29,15 @@ var Bookmark = sequelize.define('bookmarks', {
     type: Sequelize.STRING,
     allowNull: false
   },
+  // url: Sequelize.STRING,
+  // baseUrl: Sequelize.STRING,
   snapshotUrl: Sequelize.STRING, //URL from server
-  text: Sequelize.Text
-}); 
+  text: Sequelize.TEXT
+});
 
 //create Tags table
 var Tag = sequelize.define('tags', {
-  tagId: Sequelize.UUID,
+  // tagId: Sequelize.UUID,
   tagName: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -60,13 +63,10 @@ Tag.belongsToMany(Bookmark, { through: "BookmarkTags" });
 
 //check if user exists, and create a new user with a hashed password
 var createUser = function(user, pw, callback) {
-  User.findOne({ where: {
-    username: user,
-  }).success(function(user) {
+  User.findOne({ where: { username: user } })
+  .success(function(user) {
     if (user) {
-      callback(function(err) {
-        console.log("Username already taken")
-      });
+      callback("Username already taken");
     } else {
       return bcrypt.hash(pw, null, null).then(function(hash) {
         User.create({ username: user, password: hash }).success(function(user) {
@@ -125,31 +125,35 @@ var getBookmarks = function(userId, callback) {
     } else {
       callback("We didn't find any bookmarks.");
     }
-  })
+  });
 };
 
 //remove a bookmark with the given bookmark ID
 var removeBookmark = function(bookmarkId, callback) {
-  Bookmark.findOne({ where: { bookmarkId: bookmarkId } }).then(function(bookmark) {
-    bookmark.destroy().then(function() {
+  Bookmark.findOne({ where: { bookmarkId: bookmarkId } })
+  .then(function(bookmark) {
+    bookmark.destroy()
+    .then(function() {
       if (bookmark) {
         callback("Could not delete bookmark.");
       }
-    })
-  })
+    });
+  });
 };
 
 //finds or creates a tag, and adds a join to the bookmark ID
 var addTag = function(tagName, bookmarkId, callback) {
-  Tag.findOrCreate({ where: { tagName: tagname }}).success(function(tag, created) {
-    tag.addBookmark(bookmark, { where: { bookmarkId: bookmarkId }}).then(function(tag) {
+  Tag.findOrCreate({ where: { tagName: tagname } })
+  .success(function(tag, created) {
+    tag.addBookmark(bookmark, { where: { bookmarkId: bookmarkId } })
+    .then(function(tag) {
       if (!tag) {
         callback("Could not add tag.");
       } else {
-        callback(null, tag.tagName)
+        callback(null, tag.tagName);
       }
-    }
-  })
+    });
+  });
 };
 
 //finds a tag and removes it from the join table
