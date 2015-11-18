@@ -6,6 +6,7 @@ var app = express();
 var path = require('path');
 var morgan = require('morgan');
 var util = require('./utility');
+var cors = require('cors');
 
 app.use(session({
   secret: 'hrr9-neon rulezz',
@@ -14,8 +15,12 @@ app.use(session({
   cookie: { secure: true }
 }));
 
+app.use(cors());
 app.use(morgan('dev'));
 app.use(parser.json());
+
+// serves to the image requests
+app.get('/bookmarks/:code', /* util.checkUser,*/ handler.getImage);
 
 // to serve angular app maybe, not implemented yet
 app.get('/showBookmarks', /* util.checkUser,*/ handler.showBookmarks);
@@ -47,3 +52,4 @@ app.post('/signup', handler.signupUser);
 app.use(express.static(path.join(__dirname, '../client')));
 
 module.exports = app;
+
