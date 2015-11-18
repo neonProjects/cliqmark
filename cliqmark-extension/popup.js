@@ -6,6 +6,25 @@ document.addEventListener('DOMContentLoaded', function() {
     chrome.tabs.executeScript({
       code: 'document.body.style.backgroundColor="red"'
     });
+
+    // var message = '"set some storage"'
+    // chrome.storage.sync.set({'sessionID': 8675309}, function() {
+    //   chrome.tabs.executeScript({
+    //     code: 'console.log(' + message + ')'
+    //   });
+    // });
+
+    // chrome.storage.sync.get('sessionID', function(res) {
+    //   var message2 = JSON.stringify(res);
+    //   chrome.tabs.executeScript({
+    //     code: 'console.log("hello")'
+    //   })
+    // })
+
+    var message3 = '"login clicked"'
+    chrome.tabs.executeScript({
+      code: 'console.log('+ message3 + ')'
+    });
     //send GET request for cliqmark login / signup page
   }, false);
   
