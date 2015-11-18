@@ -1,7 +1,7 @@
 
 var crypto = require('crypto');
 var bcrypt = require('bcrypt-nodejs');
-var util = require('../lib/utility');
+var util = require('./utility');
 
 var db = require('./db/schema');
 
@@ -124,6 +124,7 @@ exports.loginUser = function(req, res) {
 };
 
 exports.signupUser = function(req, res) {
+  console.log(req);
   var username = req.body.username;
   var password = req.body.password;
 

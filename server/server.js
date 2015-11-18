@@ -1,10 +1,16 @@
 var express = require('express');
+var session = require('express-session');
 var util = require('./utility');
 var handler = require('./request-handler');
 
 var app = express();
 
-app.use(express.session());
+app.use(session({
+  secret: 'hrr9-neon rulezz',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}));
 
 app.get('/showBookmarks', /* util.checkUser,*/ handler.showBookmarks);
 app.get('/addBookmark', /* util.checkUser,*/ handler.addBookmark);
