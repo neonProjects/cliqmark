@@ -73,9 +73,7 @@ var createUser = function(user, pw, callback) {
           if (user) {
             callback(null, user.userId);
           } else {
-            callback(function() {
-              console.log("Unable to create user.")
-            });
+            callback("Unable to create user.");
           }
         });
       });
@@ -88,9 +86,7 @@ var createUser = function(user, pw, callback) {
 var authUser = function(user, password, callback) {
   User.findOne({ where: { username: user } }).success(function(user) {
     if (!user) {
-      callback(function() {
-        console.log("Incorrect username or password.")
-      })
+      callback("Incorrect username or password.");
     } else {
       bcrypt.compare(password, user.password, function(err, passwordMatch) {
         if (err) {
@@ -116,9 +112,7 @@ var createBookmark = function(userId, title, url, snapshotUrl, baseUrl, text, ca
     if (created) {
       callback(null, bookmark.bookmarkId);
     } else {
-      callback(function() {
-        console.log("You've already bookmarked this page.");
-      });
+      callback("You've already bookmarked this page.");
     }
   });
 };
@@ -129,9 +123,7 @@ var getBookmarks = function(userId, callback) {
     if (bookmarks.length) {
       callback(null, bookmarks);
     } else {
-      callback(function() {
-        console.log("We didn't find any bookmarks.");
-      });
+      callback("We didn't find any bookmarks.");
     }
   })
 };
@@ -141,9 +133,7 @@ var removeBookmark = function(bookmarkId, callback) {
   Bookmark.findOne({ where: { bookmarkId: bookmarkId } }).then(function(bookmark) {
     bookmark.destroy().then(function() {
       if (bookmark) {
-        callback(function() {
-          console.log("Could not delete bookmark.");
-        })
+        callback("Could not delete bookmark.");
       }
     })
   })
@@ -154,9 +144,7 @@ var addTag = function(tagName, bookmarkId, callback) {
   Tag.findOrCreate({ where: { tagName: tagname }}).success(function(tag, created) {
     tag.addBookmark(bookmark, { where: { bookmarkId: bookmarkId }}).then(function(tag) {
       if (!tag) {
-        callback(function() {
-          console.log("Could not add tag.")
-        })
+        callback("Could not add tag.");
       } else {
         callback(null, tag.tagName)
       }
@@ -164,13 +152,13 @@ var addTag = function(tagName, bookmarkId, callback) {
   })
 };
 
-//  callback has (err) arguments
-var removeTag = function(tagName, bookmarkId, callback) {
-  Tag.findOne({ where: { tagName: tagName } }).then(function(tag) {
+//finds a tag and removes it from the join table
+var removeTag = function(tagId, bookmarkId, callback) {
+  BookmarkTags.findOne({ where: { tagId: tagId, bookmarkId: bookmarkId } }).then(function(tag) {
     tag.destroy().then(function() {
       if (tag) {
-        console.log("Could not remove tag.")
-      } else
+        callback("Could not remove tag.");
+      }
     });
   });
 };
