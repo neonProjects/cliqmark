@@ -38,6 +38,14 @@ document.addEventListener('DOMContentLoaded', function() {
     var userId = window.localStorage.getItem('cliqmark_user');
 
 
+    chrome.storage.sync.get('sessionID', function(res) {
+      var message2 = JSON.stringify(res);
+      chrome.tabs.executeScript({
+        code: 'console.log("hello")'
+      })
+    })
+
+
     var xhr = new XMLHttpRequest();
     xhr.open('POST', 'http://0.0.0.0:3000/api/addBookmark', true);
     xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');

@@ -5,28 +5,30 @@ angular.module('cliqmark.services', [])
   var getData = function(){
     var token = $window.localStorage.getItem('cliqmark_token');
     var userId = $window.localStorage.getItem('cliqmark_user');
+    console.log(token);
+    console.log(userId);
 
     return $http({
       method: 'GET',
       url: '/api/getBookmarks?userId=' + userId, //todo: change this hard coded',
-      data: token
+      headers: { token: token }
     })
     .then(function (resp) {
       return resp.data;
     });
   };
 
-  var addBookmark = function(bookmark){
-    $http({
-      method: 'POST',
-      url: '/api/addBookmark',
-      data: bookmark
-    });
-  };
+  // var addBookmark = function(bookmark){
+  //   $http({
+  //     method: 'POST',
+  //     url: '/api/addBookmark',
+  //     data: bookmark
+  //   });
+  // };
 
   return {
-    getData: getData,
-    addBookmark: addBookmark
+    getData: getData
+    // addBookmark: addBookmark
   };
 })
 
@@ -73,7 +75,8 @@ angular.module('cliqmark.services', [])
   };
 
   var signout = function () {
-    $window.localStorage.removeItem('cliqmark');
+    $window.localStorage.removeItem('cliqmark_user');
+    $window.localStorage.removeItem('cliqmark_token');
     $location.path('/api/login');
   };
 
