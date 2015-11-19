@@ -5,8 +5,6 @@ angular.module('cliqmark.services', [])
   var getData = function(){
     var token = $window.localStorage.getItem('cliqmark_token');
     var userId = $window.localStorage.getItem('cliqmark_user');
-    console.log(token);
-    console.log(userId);
 
     return $http({
       method: 'GET',
@@ -71,20 +69,12 @@ angular.module('cliqmark.services', [])
   };
 
   var isAuth = function () {
-    return !!$window.localStorage.getItem('cliqmark');
+    return !!$window.localStorage.getItem('cliqmark_token') && !!$window.localStorage.getItem('cliqmark_user');
   };
-
-  var signout = function () {
-    $window.localStorage.removeItem('cliqmark_user');
-    $window.localStorage.removeItem('cliqmark_token');
-    $location.path('/api/login');
-  };
-
 
   return {
     login: login,
     signup: signup,
     isAuth: isAuth,
-    signout: signout
   };
 });
