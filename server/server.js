@@ -47,11 +47,20 @@ routes.post('/login', handler.loginUser);
 // expects 'username' and 'password' in post body
 routes.post('/signup', handler.signupUser);
 
+
+// serves to the image requests
+routes.get('/bookmarks/:code', /* util.checkUser,*/ handler.getImage);
+
 // route middleware to verify a token
 routes.use(function(req, res, next) {
 
   // check header or url parameters or post parameters for token
-  var token = req.body.token || req.query.token || req.headers['x-access-token'];
+  var token = req.body.token || req.query.token || req.headers['token'];
+
+  // console.log(token);
+  console.log(req.body);
+  console.log(req.query);
+  console.log(req.headers);
 
   // decode token
   if (token) {
@@ -86,8 +95,6 @@ routes.use(function(req, res, next) {
 //   return res.redirect('/#/bookmarks');
 // });
 
-// serves to the image requests
-routes.get('/bookmarks/:code', /* util.checkUser,*/ handler.getImage);
 
 // to serve angular app maybe, not implemented yet
 // routes.get('/showBookmarks', /* util.checkUser,*/ handler.showBookmarks);
