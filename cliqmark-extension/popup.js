@@ -27,22 +27,23 @@ document.addEventListener('DOMContentLoaded', function() {
     //   })
     // })
 
-    var message3 = '"login clicked"';
-    chrome.tabs.executeScript({
-      code: 'console.log('+ message3 + ')'
-    });
+    chrome.tabs.create({ url: 'http://localhost:3000/#/login' });
     //send GET request for cliqmark login / signup page
   }, false);
 
   var addBookmarkButton = document.getElementById('addBookmark');
   addBookmarkButton.addEventListener('click', function() {
     //this shows our button lister is working
+    var token = window.localStorage.getItem('cliqmark_token');
+    var userId = window.localStorage.getItem('cliqmark_user');
+
+
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://0.0.0.0:3000/addBookmark', true);
+    xhr.open('POST', 'http://0.0.0.0:3000/api/addBookmark', true);
     xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 
     // send the collected data as JSON
-    xhr.send(JSON.stringify({ url: tab.url, userId: 1 })); //userId hardcoded!!!!!
+    xhr.send(JSON.stringify({ url: tab.url, userId: userId, token: token })); //userId hardcoded!!!!!
     // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ userId hardcoded!!!!!!
 
     xhr.onloadend = function () {

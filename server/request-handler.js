@@ -60,6 +60,7 @@ exports.logoutUser = function(req, res) {
 };
 
 exports.getBookmarks = function(req, res) {
+
   var userId = req.query.userId;
 
   db.getBookmarks(userId, function(err, bookmarks) {
@@ -156,9 +157,9 @@ exports.loginUser = function(req, res) {
         username: username
       };
       var token = jwt.sign(user, config.secret, {
-        expiresInMinutes: 20
+        expiresInMinutes: 6000
       });
-      res.json({success: true, message: 'user authenticated', token: token});
+      res.json({ success: true, userId: userId, message: 'user authenticated', token: token });
       //util.createSession(req, res, user);
       //res.status(200).send(user);
     }
@@ -180,9 +181,9 @@ exports.signupUser = function(req, res) {
       };
       console.log(user);
       var token = jwt.sign(user, config.secret, {
-        expiresInMinutes: 20
+        expiresInMinutes: 6000
       });
-      res.json({success: true, message: 'user authenticated', token: token});
+      res.json({ success: true, userId: userId, message: 'user authenticated', token: token });
       //util.createSession(req, res, user);
       //res.status(200).send(user);
     }

@@ -8,9 +8,10 @@ angular.module('cliqmark.auth', [])
 
   $scope.login = function () {
     Auth.login($scope.user)
-      .then(function (token) {
-        $window.localStorage.setItem('com.shortly', token);
-        $location.path('/links');
+      .then(function (storageItem) {
+        $window.localStorage.setItem('cliqmark_user', storageItem.userId);
+        $window.localStorage.setItem('cliqmark_token', storageItem.token);
+        $location.path('/bookmarks');
       })
       .catch(function (error) {
         console.error(error);
@@ -19,9 +20,10 @@ angular.module('cliqmark.auth', [])
 
   $scope.signup = function () {
     Auth.signup($scope.user)
-      .then(function (token) {
-        $window.localStorage.setItem('com.shortly', token);
-        $location.path('/links');
+      .then(function (storageItem) {
+        $window.localStorage.setItem('cliqmark_user', storageItem.userId);
+        $window.localStorage.setItem('cliqmark_token', storageItem.token);
+        $location.path('/bookmarks');
       })
       .catch(function (error) {
         console.error(error);

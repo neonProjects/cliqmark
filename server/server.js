@@ -21,21 +21,31 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(parser.json());
 
+app.use(express.static(path.join(__dirname, '../client')));
+
+// app.use('/app/*', function(req, res){
+//   //var uid = req.params.uid;
+//   var pathToIndex = req.params[0] ? req.params[0] : 'index.html';
+//   res.sendfile(pathToIndex, { root: path.join(__dirname, '../client') });
+// });
+
+
 var routes = express.Router();
 
 // planned to serve login page, not implemented yet
-//routes.get('/login', handler.loginUserForm);
+// routes.get('/login', handler.loginUserForm);
+// routes.get('/login', function(req, res) {
+//   return res.redirect('/#/login');
+// });
 // expects 'username' and 'password' in post body
 routes.post('/login', handler.loginUser);
 // logs out user
-routes.get('/logout', handler.logoutUser);
+// routes.get('/logout', handler.logoutUser);
 
 // planned to serve signup page, not implemented yet
-routes.get('/signup', handler.signupUserForm);
+// routes.get('/signup', handler.signupUserForm);
 // expects 'username' and 'password' in post body
 routes.post('/signup', handler.signupUser);
-
-
 
 // route middleware to verify a token
 routes.use(function(req, res, next) {
@@ -47,13 +57,13 @@ routes.use(function(req, res, next) {
   if (token) {
 
     // verifies secret and checks exp
-    jwt.verify(token, 'cliqmark is ruling the universe', function(err, decoded) {      
+    jwt.verify(token, 'cliqmark is ruling the universe', function(err, decoded) {
       if (err) {
-        return res.redirect('/login');
-        //return res.json({ success: false, message: 'Failed to authenticate token.' });    
+        // return res.redirect('/login');
+        return res.json({ success: false, message: 'Failed to authenticate token.' });
       } else {
         // if everything is good, save to request for use in other routes
-        req.decoded = decoded;    
+        req.decoded = decoded;
         console.log(decoded);
         next();
       }
@@ -63,23 +73,24 @@ routes.use(function(req, res, next) {
 
     // if there is no token
     // send to login page
-    return res.redirect('/login');
-    // return res.status(403).send({ 
-    //     success: false, 
-    //     message: 'No token provided.' 
-    // });
-    
+    // return res.redirect('/login');
+    return res.status(403).send({
+        success: false,
+        message: 'No token provided.'
+    });
+
   }
 });
 
-
-
+// routes.get('/bookmarks/', /* util.checkUser,*/ function(req, res) {
+//   return res.redirect('/#/bookmarks');
+// });
 
 // serves to the image requests
 routes.get('/bookmarks/:code', /* util.checkUser,*/ handler.getImage);
 
 // to serve angular app maybe, not implemented yet
-routes.get('/showBookmarks', /* util.checkUser,*/ handler.showBookmarks);
+// routes.get('/showBookmarks', /* util.checkUser,*/ handler.showBookmarks);
 
 // expects 'url' and 'userId' in post body
 routes.post('/addBookmark', /* util.checkUser,*/ handler.addBookmark);
@@ -94,14 +105,9 @@ routes.post('/addTag', /* util.checkUser,*/ handler.addTag);
 routes.post('/deleteTag', /* util.checkUser,*/ handler.deleteTag);
 
 
-//routes.use(express.static(path.join(__dirname, '../client')));  //todo: check this
-routes.get('/*', function(req, res){
-  //var uid = req.params.uid;
-  var pathToIndex = req.params[0] ? req.params[0] : 'index.html';
-  res.sendfile(pathToIndex, {root: path.join(__dirname, '../client')});
-});
 
-app.use('/', routes);
+//routes.use(express.static(path.join(__dirname, '../client')));  //todo: check this
+app.use('/api', routes);
 
 module.exports = app;
 
