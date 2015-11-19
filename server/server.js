@@ -7,49 +7,101 @@ var path = require('path');
 var morgan = require('morgan');
 var util = require('./utility');
 var cors = require('cors');
+var jwt = require('jsonwebtoken');
 
-app.use(session({
-  secret: 'hrr9-neon rulezz',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true }
-}));
+
+// app.use(session({
+//   secret: 'hrr9-neon rulezz',
+//   resave: false,
+//   saveUninitialized: true,
+//   cookie: { secure: true }
+// }));
 
 app.use(cors());
 app.use(morgan('dev'));
 app.use(parser.json());
 
-// serves to the image requests
-app.get('/bookmarks/:code', /* util.checkUser,*/ handler.getImage);
-
-// to serve angular app maybe, not implemented yet
-app.get('/showBookmarks', /* util.checkUser,*/ handler.showBookmarks);
-
-// expects 'url' and 'userId' in post body
-app.post('/addBookmark', /* util.checkUser,*/ handler.addBookmark);
-// expects 'bookmarkId' in post body
-app.post('/deleteBookmark', /* util.checkUser,*/ handler.deleteBookmark);
-// expects 'userId' in query (url: http://localhost:3000?userId=1)
-app.get('/getBookmarks', /* util.checkUser,*/ handler.getBookmarks);
-
-// expects 'tagName' and 'bookmarkId' in post body
-app.post('/addTag', /* util.checkUser,*/ handler.addTag);
-// expects 'tagId' and 'bookmarkId' in post body
-app.post('/deleteTag', /* util.checkUser,*/ handler.deleteTag);
+var routes = express.Router();
 
 // planned to serve login page, not implemented yet
-app.get('/login', handler.loginUserForm);
+//routes.get('/login', handler.loginUserForm);
 // expects 'username' and 'password' in post body
-app.post('/login', handler.loginUser);
+routes.post('/login', handler.loginUser);
 // logs out user
-app.get('/logout', handler.logoutUser);
+routes.get('/logout', handler.logoutUser);
 
 // planned to serve signup page, not implemented yet
-app.get('/signup', handler.signupUserForm);
+routes.get('/signup', handler.signupUserForm);
 // expects 'username' and 'password' in post body
-app.post('/signup', handler.signupUser);
+routes.post('/signup', handler.signupUser);
 
-app.use(express.static(path.join(__dirname, '../client')));
+
+
+// route middleware to verify a token
+routes.use(function(req, res, next) {
+
+  // check header or url parameters or post parameters for token
+  var token = req.body.token || req.query.token || req.headers['x-access-token'];
+
+  // decode token
+  if (token) {
+
+    // verifies secret and checks exp
+    jwt.verify(token, 'cliqmark is ruling the universe', function(err, decoded) {      
+      if (err) {
+        return res.redirect('/login');
+        //return res.json({ success: false, message: 'Failed to authenticate token.' });    
+      } else {
+        // if everything is good, save to request for use in other routes
+        req.decoded = decoded;    
+        console.log(decoded);
+        next();
+      }
+    });
+
+  } else {
+
+    // if there is no token
+    // send to login page
+    return res.redirect('/login');
+    // return res.status(403).send({ 
+    //     success: false, 
+    //     message: 'No token provided.' 
+    // });
+    
+  }
+});
+
+
+
+
+// serves to the image requests
+routes.get('/bookmarks/:code', /* util.checkUser,*/ handler.getImage);
+
+// to serve angular app maybe, not implemented yet
+routes.get('/showBookmarks', /* util.checkUser,*/ handler.showBookmarks);
+
+// expects 'url' and 'userId' in post body
+routes.post('/addBookmark', /* util.checkUser,*/ handler.addBookmark);
+// expects 'bookmarkId' in post body
+routes.post('/deleteBookmark', /* util.checkUser,*/ handler.deleteBookmark);
+// expects 'userId' in query (url: http://localhost:3000?userId=1)
+routes.get('/getBookmarks', /* util.checkUser,*/ handler.getBookmarks);
+
+// expects 'tagName' and 'bookmarkId' in post body
+routes.post('/addTag', /* util.checkUser,*/ handler.addTag);
+// expects 'tagId' and 'bookmarkId' in post body
+routes.post('/deleteTag', /* util.checkUser,*/ handler.deleteTag);
+
+
+//routes.use(express.static(path.join(__dirname, '../client')));  //todo: check this
+routes.get('/*', function(req, res){
+  //var uid = req.params.uid;
+  var pathToIndex = req.params[0] ? req.params[0] : 'index.html';
+  res.sendfile(pathToIndex, {root: path.join(__dirname, '../client')});
+});
+
+app.use('/', routes);
 
 module.exports = app;
 

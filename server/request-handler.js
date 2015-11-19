@@ -1,11 +1,13 @@
 var fs = require('fs');
 var md5 = require('md5');
 var util = require('./utility');
-
+var jwt = require('jsonwebtoken');
 var db = require('./db/schema');
+var path = require('path');
 
 var config = {
   shotpath: './server/shots/',
+  secret: 'cliqmark is ruling the universe'
 };
 
 
@@ -43,6 +45,8 @@ exports.signupUserForm = function(req, res) {
 
 exports.loginUserForm = function(req, res) {
   // show login form
+  var pathToIndex = req.params[0] ? req.params[0] : 'index.html';
+  res.sendfile(pathToIndex, {root: path.join(__dirname, '../client')});
 };
 
 exports.showBookmarks = function(req, res) {
@@ -151,8 +155,12 @@ exports.loginUser = function(req, res) {
         userId: userId,
         username: username
       };
-      util.createSession(req, res, user);
-      res.status(200).send(user);
+      var token = jwt.sign(user, config.secret, {
+        expiresInMinutes: 20
+      });
+      res.json({success: true, message: 'user authenticated', token: token});
+      //util.createSession(req, res, user);
+      //res.status(200).send(user);
     }
   });
 };
@@ -171,8 +179,12 @@ exports.signupUser = function(req, res) {
         username: username
       };
       console.log(user);
-      util.createSession(req, res, user);
-      res.status(200).send(user);
+      var token = jwt.sign(user, config.secret, {
+        expiresInMinutes: 20
+      });
+      res.json({success: true, message: 'user authenticated', token: token});
+      //util.createSession(req, res, user);
+      //res.status(200).send(user);
     }
   });
 };
