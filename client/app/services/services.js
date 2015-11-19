@@ -1,11 +1,15 @@
 angular.module('cliqmark.services', [])
 
-.factory('Bookmarks', function ($http) {
+.factory('Bookmarks', function ($http, $window) {
 
   var getData = function(){
+    var token = $window.localStorage.getItem('cliqmark_token');
+    var userId = $window.localStorage.getItem('cliqmark_user');
+
     return $http({
       method: 'GET',
-      url: '/getBookmarks?userId=1' //todo: change this hard coded',
+      url: '/api/getBookmarks?userId=' + userId, //todo: change this hard coded',
+      data: token
     })
     .then(function (resp) {
       return resp.data;
@@ -15,7 +19,7 @@ angular.module('cliqmark.services', [])
   var addBookmark = function(bookmark){
     $http({
       method: 'POST',
-      url: '/addBookmark',
+      url: '/api/addBookmark',
       data: bookmark
     });
   };
@@ -23,7 +27,7 @@ angular.module('cliqmark.services', [])
   return {
     getData: getData,
     addBookmark: addBookmark
-  }
+  };
 })
 
 .factory('Auth', function ($http, $location, $window) {
@@ -37,32 +41,40 @@ angular.module('cliqmark.services', [])
   var login = function (user) {
     return $http({
       method: 'POST',
-      url: '/login',
+      url: '/api/login',
       data: user
     })
     .then(function (resp) {
-      return resp.data.token;
+      var storageItem = {
+        token: resp.data.token,
+        userId: resp.data.userId
+      };
+      return storageItem;
     });
   };
 
   var signup = function (user) {
     return $http({
       method: 'POST',
-      url: '/signup',
+      url: '/api/signup',
       data: user
     })
     .then(function (resp) {
-      return resp.data.token;
+      var storageItem = {
+        token: resp.data.token,
+        userId: resp.data.userId
+      };
+      return storageItem;
     });
   };
 
   var isAuth = function () {
-    return !!$window.localStorage.getItem('com.shortly');
+    return !!$window.localStorage.getItem('cliqmark');
   };
 
   var signout = function () {
-    $window.localStorage.removeItem('com.shortly');
-    $location.path('/signin');
+    $window.localStorage.removeItem('cliqmark');
+    $location.path('/api/login');
   };
 
 
