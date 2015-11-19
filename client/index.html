@@ -1,11 +1,19 @@
 <!DOCTYPE html>
-<html ng-app='cliqmarkclient'>
+<html ng-app='cliqmark'>
   <head>
     <meta charset="utf-8" />
     <title>Cliqmark</title>
     <link rel="stylesheet" type="text/css" href="styles/style.css" />
   </head>
   <body>
+  <div class="header">
+    <div class="logo">
+      <h1>CliqMark</h1>
+    </div>
+    <div class="logout">
+      <a href="#/login">logout</a> <!-- -->
+    </div>
+  </div>
 
     <!-- templates will be loaded here when naviagted to -->
     <div ng-view></div>
@@ -13,6 +21,9 @@
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
 
+    <script src="app/auth/auth.js"></script>
+    <script src="app/bookmarks/bookmarks.js"></script>
+    <script src="app/services/services.js"></script>
     <script src="app/app.js"></script>
   </body>
 </html>

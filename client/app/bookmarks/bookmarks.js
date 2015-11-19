@@ -1,4 +1,19 @@
 //todo move the bookmark controller in here
-var bookmarkModule = angular.module('cliqmark.bookmarks', []);
+angular.module('cliqmark.bookmarks', [])
 
-bookmarkModule.controller('BookmarksController', function($scope) {});
+.controller('BookmarksController', function($scope, Bookmarks) {
+  $scope.data = {};
+  $scope.getBookmarks = function() {
+    //todo: replace this fake data with real call to DB
+    // var data = Bookmarks.getData();
+    // $scope.data.bookmarks = data;
+    Bookmarks.getData()
+      .then(function(data) {
+        $scope.data.bookmarks = data;
+      })
+      .catch(function(err) {
+        console.log(err);
+      });
+  };
+  $scope.getBookmarks();
+});
