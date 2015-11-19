@@ -4,6 +4,9 @@
     <div class="searchbar">
       <input type="text" ng-model="search" placeholder="filter"/>
     </div>
+    <div class="logout" ng-click="logout()">
+      <a href="">logout</a> <!-- -->
+    </div>
     <div class="individualBookmark" ng-repeat="bookmark in data.bookmarks | filter:search | orderBy:'created_at'">
       <div class="info">
         <a href="{{bookmark.url}}" target="_blank">

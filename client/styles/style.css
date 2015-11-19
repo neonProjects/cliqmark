@@ -22,11 +22,10 @@ h1 {
   float: left;
 }
 
-.header .logout {
+.logout {
   margin: 0;
   padding: 0;
   list-style: none;
-  float: right;
 }
 
 .header .logout:hover {
