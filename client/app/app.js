@@ -15,7 +15,7 @@ app.config(function($routeProvider, $httpProvider) {
       templateUrl: 'app/auth/login.html',
       controller: 'AuthController'
     })
-    .when('/login', {
+    .when('/signup', {
       templateUrl: 'app/auth/signup.html',
       controller: 'AuthController'
     })

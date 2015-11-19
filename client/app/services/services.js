@@ -2,28 +2,26 @@ angular.module('cliqmark.services', [])
 
 .factory('Bookmarks', function ($http) {
 
-  var getdata = function(){
-    $http({
+  var getData = function(){
+    return $http({
       method: 'GET',
       url: '/getBookmarks?userId=1' //todo: change this hard coded',
     })
-    .then(function successCallback(resp) {
+    .then(function (resp) {
       return resp.data;
-    }, function errCallback(resp) {
-      return resp.err;
-    })
-  }
+    });
+  };
 
   var addBookmark = function(bookmark){
     $http({
       method: 'POST',
       url: '/addBookmark',
       data: bookmark
-    })
-  }
+    });
+  };
 
   return {
-    getdata: getdata,
+    getData: getData,
     addBookmark: addBookmark
   }
 })
@@ -36,10 +34,10 @@ angular.module('cliqmark.services', [])
   // that JWT is then stored in localStorage as 'com.shortly'
   // after you signin/signup open devtools, click resources,
   // then localStorage and you'll see your token from the server
-  var signin = function (user) {
+  var login = function (user) {
     return $http({
       method: 'POST',
-      url: '/signin',
+      url: '/login',
       data: user
     })
     .then(function (resp) {
@@ -69,7 +67,7 @@ angular.module('cliqmark.services', [])
 
 
   return {
-    signin: signin,
+    login: login,
     signup: signup,
     isAuth: isAuth,
     signout: signout
