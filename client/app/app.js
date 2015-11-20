@@ -1,5 +1,5 @@
 var app = angular.module('cliqmark', [
-    'cliqmark.extension'
+    'cliqmark.extension',
     'cliqmark.bookmarks',
     'cliqmark.auth',
     'cliqmark.services',
@@ -10,7 +10,7 @@ app.config(function($routeProvider, $httpProvider) {
   $routeProvider
     .when('/extension', {
       templateUrl: 'app/extension/extension.html',
-      controller: 'ExtensionsController',
+      controller: 'ExtensionController',
     })
     .when('/bookmarks', {
       templateUrl: 'app/bookmarks/bookmarks.html',
