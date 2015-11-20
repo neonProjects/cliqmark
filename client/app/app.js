@@ -1,5 +1,5 @@
 var app = angular.module('cliqmark', [
-    'cliqmark.extension'
+    'cliqmark.extension',
     'cliqmark.bookmarks',
     'cliqmark.auth',
     'cliqmark.services',

@@ -1,17 +1,19 @@
 <!-- todo: work on presentation / layout of this -->
 <div id="container">
   <div class="bookmarkslist" ng-controller="BookmarksController">
-    <div class="searchbar">
-      <input type="text" ng-model="search" placeholder="filter"/>
-    </div>
-    <div class="logout" ng-click="logout()">
-      <a href="">logout</a> <!-- -->
+    <div class="searchLogout">
+      <div class="searchbar">
+        <input type="text" ng-model="search" placeholder="filter"/>
+      </div>
+      <div class="logout" ng-click="logout()">
+        <a href="">logout</a> <!-- -->
+      </div>
     </div>
     <div class="individualBookmark" ng-repeat="bookmark in data.bookmarks | filter:search | orderBy:'created_at'">
       <div class="info">
         <a href="{{bookmark.url}}" target="_blank">
           <!--todo: fix this hard coding -->
-          <span class="title">{{bookmark.title.slice(0,25) || bookmark.url.slice(7,32)}}</span>
+          <span class="title">{{bookmark.title || bookmark.url.slice(7)}}</span>
           <img class="snapshot" src="api/bookmarks/{{bookmark.snapshotUrl}}" />
         </a>
       </div>

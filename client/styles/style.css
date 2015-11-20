@@ -1,7 +1,6 @@
 body {
   margin: 0;
   margin-top: 10px;
-  font-family: arial, sans-serif;
 }
 
 a {
@@ -11,15 +10,30 @@ a {
 }
 
 h1 {
+  font-family: Impact, Charcoal, sans-serif;
   font-style: italic;
+  font-size: 40px;
+  margin-left: 15px;
   margin-bottom: 10px;
+  padding-bottom: 10px;
+  color: #FFE8A3;
 }
 
 .header {
+  position: relative;
+  top: -20px;
   width: 100%;
   height: auto;
-  background-color: #eee;
+  background-color: #4488BC;
   float: left;
+}
+
+.searchLogout {
+  width: 100%;
+  overflow: none;
+}
+
+.searchbar {
 }
 
 .logout {
@@ -44,20 +58,31 @@ h1 {
   margin: 10px;
 }
 
+.ng-scope {
+  background-color: #F1F1F1;
+}
+
 .individualBookmark {
   clear: both;
-  margin: 5px;
-  padding: 5px;
+  margin: 10px;
+  padding: 10px;
   min-height: 50px;
   width: 225px;
   height: auto;
   position: relative;
   display: inline-block;
-  border-style: solid;
+  background-color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .title {
   height: 16px;
+}
+
+.title .ng-binding {
+  font-family: arial, sans-serif;
 }
 
 img {
@@ -67,9 +92,6 @@ img {
 }
 
 .info {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   display: inline;
   position: relative;
 }
