@@ -51,6 +51,12 @@ routes.post('/signup', handler.signupUser);
 // serves to the image requests
 routes.get('/bookmarks/:code', /* util.checkUser,*/ handler.getImage);
 
+// expects 'url' and 'userId' in post body
+routes.post('/addBookmark', /* util.checkUser,*/ handler.addBookmark);
+
+// expects 'userId' in query (url: http://localhost:3000?userId=1)
+routes.get('/getBookmarks', /* util.checkUser,*/ handler.getBookmarks);
+
 // route middleware to verify a token
 routes.use(function(req, res, next) {
 
@@ -99,12 +105,10 @@ routes.use(function(req, res, next) {
 // to serve angular app maybe, not implemented yet
 // routes.get('/showBookmarks', /* util.checkUser,*/ handler.showBookmarks);
 
-// expects 'url' and 'userId' in post body
-routes.post('/addBookmark', /* util.checkUser,*/ handler.addBookmark);
+
 // expects 'bookmarkId' in post body
 routes.post('/deleteBookmark', /* util.checkUser,*/ handler.deleteBookmark);
-// expects 'userId' in query (url: http://localhost:3000?userId=1)
-routes.get('/getBookmarks', /* util.checkUser,*/ handler.getBookmarks);
+
 
 // expects 'tagName' and 'bookmarkId' in post body
 routes.post('/addTag', /* util.checkUser,*/ handler.addTag);
