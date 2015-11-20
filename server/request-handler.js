@@ -10,9 +10,8 @@ var config = {
   secret: 'cliqmark is ruling the universe'
 };
 
-
 exports.getImage = function(req, res) {
-
+  // get and return snapshot image of bookmarked page
   var options = {
     root: __dirname + '/shots',
     dotfiles: 'deny',
@@ -25,9 +24,6 @@ exports.getImage = function(req, res) {
   var fileName = req.params.code;
   console.log(fileName);
 
-  // fs.readFile(config.shotpath + fileName, function(err, data){
-  //   console.log(md5(data));
-  // });
   res.sendFile(fileName, options, function (err) {
     if (err) {
       console.log(err);
@@ -102,6 +98,7 @@ exports.addBookmark = function(req, res) {
 };
 
 exports.deleteBookmark = function(req, res) {
+  //todo: add this functionality to client
   var bookmarkId = req.body.bookmarkId;
 
   db.removeBookmark(bookmarkId, function(err) {
@@ -114,6 +111,7 @@ exports.deleteBookmark = function(req, res) {
 };
 
 exports.addTag = function(req, res) {
+  //todo: add this functionality to client
   var tagName = req.body.tagName;
   var bookmarkId = req.body.bookmarkId;
 
@@ -131,6 +129,7 @@ exports.addTag = function(req, res) {
 };
 
 exports.deleteTag = function(req, res) {
+  //todo: add this functionality to client
   var tagId = req.body.tagId;
   // var tagName = req.body.tagName;
   var bookmarkId = req.body.bookmarkId;
@@ -145,6 +144,8 @@ exports.deleteTag = function(req, res) {
 };
 
 exports.loginUser = function(req, res) {
+  //basic mechanism of auth exists at server level
+  //client / chrome-extension architecture needs to be built
   var username = req.body.username;
   var password = req.body.password;
 

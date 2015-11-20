@@ -1,25 +1,24 @@
 var Sequelize = require('sequelize');
 
-// empty database should be created manually in mysql. this also assumes username is root without password
+// empty database should be created manually in mysql. MUST DO THIS FIRST
+// server will create tables on first run, but empty DB needs to have been created
+// this also assumes username is root without password
 var sequelize = new Sequelize('cliqmark', 'root', null, {});
 var Promise = require('bluebird');
 var bcrypt = require('bcrypt-nodejs');
 
 //create a Users table
 var User = sequelize.define('users', {
-  // userId: Sequelize.UUID,
   username: {
     type: Sequelize.STRING,
     allowNull: false,
     unique: true
   },
-  // username: Sequelize.STRING,
   password: Sequelize.STRING
 });
 
 //create a Bookmarks table
 var Bookmark = sequelize.define('bookmarks', {
-  // bookmarkId: Sequelize.UUID,
   title: Sequelize.STRING,
   url: {
     type: Sequelize.STRING,
@@ -29,15 +28,13 @@ var Bookmark = sequelize.define('bookmarks', {
     type: Sequelize.STRING,
     allowNull: false
   },
-  // url: Sequelize.STRING,
-  // baseUrl: Sequelize.STRING,
   snapshotUrl: Sequelize.STRING, //URL from server
   text: Sequelize.TEXT
 });
 
-//create Tags table
+//create Tags table:
+//tags are single word descriptors that can be associated to each bookmarked page
 var Tag = sequelize.define('tags', {
-  // tagId: Sequelize.UUID,
   tagName: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -51,7 +48,7 @@ var Tag = sequelize.define('tags', {
 //Bookmarks have one user, users have many bookmarks
 User.hasMany(Bookmark);
 Bookmark.belongsTo(User);
-// Bookmark.hasOne(User);
+
 //Bookmarks have many tags, and tags have many bookmarks
 Bookmark.belongsToMany(Tag, { through: "BookmarkTags" });
 Tag.belongsToMany(Bookmark, { through: "BookmarkTags" });
@@ -136,7 +133,7 @@ exports.createBookmark = function(userId, title, url, snapshotUrl, baseUrl, text
 
 //get all bookmarks with a the logged in users ID
 exports.getBookmarks = function(userId, callback) {
-  Bookmark.findAll({ where: { userId: userId } })
+  Bookmark.findAll({ where: { userId: userId }, order: 'createdAt DESC' })
   .then(function(bookmarks) {
     if (bookmarks.length) {
       callback(null, bookmarks);
