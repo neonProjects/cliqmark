@@ -6,13 +6,21 @@
 
   "permissions": [
    "tabs",
-   "storage"
+   "storage",
+   "<all_urls>"
   ],
 
   "browser_action": {
    "default_icon": "icon.png",
    "default_popup": "popup.html"
   },
+
+  "content_scripts": [
+    { 
+      "matches": ["<all_urls>"],
+      "js": ["bookmark.js"]
+    }
+  ],
 
   "manifest_version": 2
 }
