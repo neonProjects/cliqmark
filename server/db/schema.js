@@ -3,7 +3,10 @@ var Sequelize = require('sequelize');
 // empty database should be created manually in mysql. MUST DO THIS FIRST
 // server will create tables on first run, but empty DB needs to have been created
 // this also assumes username is root without password
-var sequelize = new Sequelize('cliqmark', 'root', null, {});
+var sequelize = new Sequelize('heroku_549146affd99214', 'b1e40743918351', '796f72af', {
+  host: 'us-cdbr-iron-east-03.cleardb.net',
+  dialect: 'mysql',
+});
 var Promise = require('bluebird');
 var bcrypt = require('bcrypt-nodejs');
 
