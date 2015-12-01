@@ -8,7 +8,7 @@ angular.module('cliqmark.services', [])
 
     return $http({
       method: 'GET',
-      url: '/getBookmarks?userId=' + userId, //todo: change this hard coded',
+      url: '/api/getBookmarks?userId=' + userId, //todo: change this hard coded',
       headers: { token: token }
     })
     .then(function (resp) {
@@ -42,7 +42,7 @@ angular.module('cliqmark.services', [])
   var login = function (user) {
     return $http({
       method: 'POST',
-      url: '/login',
+      url: '/api/login',
       data: user
     })
     .then(function (resp) {
@@ -57,7 +57,7 @@ angular.module('cliqmark.services', [])
   var signup = function (user) {
     return $http({
       method: 'POST',
-      url: '/signup',
+      url: '/api/signup',
       data: user
     })
     .then(function (resp) {
