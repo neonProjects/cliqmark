@@ -22,6 +22,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
+  chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    window.localStorage.userId = request.userId;
+    sendResponse({}); // Is it necessary to call sendResponse?
+  });
+
   // make a listener / action for Bookmark! button
   var addBookmarkButton = document.getElementById('addBookmark');
   addBookmarkButton.addEventListener('click', function() {
