@@ -16,7 +16,7 @@ h1 {
   margin-left: 15px;
   margin-bottom: 10px;
   padding-bottom: 10px;
-  color: #FFE8A3;
+  color: black;
 }
 
 .header {
@@ -40,6 +40,7 @@ h1 {
   margin: 0;
   padding: 0;
   list-style: none;
+
 }
 
 .header .logout:hover {
