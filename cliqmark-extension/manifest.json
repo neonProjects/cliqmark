@@ -6,7 +6,8 @@
 
   "permissions": [
    "tabs",
-   "storage"
+   "storage",
+   "https://whispering-brook-6037.herokuapp.com/*"
   ],
 
   "browser_action": {
