@@ -45,7 +45,7 @@ routes.post('/login', handler.loginUser);
 // planned to serve signup page, not implemented yet
 // routes.get('/signup', handler.signupUserForm);
 // expects 'username' and 'password' in post body
-routes.post('/signup', handler.signupUser);
+routes.post('/api/signup', handler.signupUser);
 
 
 // serves to the image requests
@@ -121,4 +121,3 @@ routes.post('/deleteTag', /* util.checkUser,*/ handler.deleteTag);
 app.use('/api', routes);
 
 module.exports = app;
-
