@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-  
+
   // Get the active tab
   var tab;
   chrome.tabs.query({ active: true, lastFocusedWindow: true }, function(tabs) {
@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var addBookmarkButton = document.getElementById('addBookmark');
   addBookmarkButton.addEventListener('click', function() {
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://0.0.0.0:3000/api/addBookmark', true);
+    xhr.open('POST', 'https://whispering-brook-6037.herokuapp.com/api/addBookmark', true);
     xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 
     // send the collected data as JSON
@@ -19,18 +19,14 @@ document.addEventListener('DOMContentLoaded', function() {
     xhr.onloadend = function () {
 
     };
-    
+
   }, false);
 
   // make a listener / action for MyBookmarks button
   var getBookmarksButton = document.getElementById('getBookmarks');
   getBookmarksButton.addEventListener('click', function() {
-    chrome.tabs.create({ url: 'http://localhost:3000/#/bookmarks' });
+    chrome.tabs.create({ url: 'https://whispering-brook-6037.herokuapp.com/#/bookmarks' });
 
   }, false);
 
 }, false);
-
-
-
-
