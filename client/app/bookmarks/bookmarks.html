@@ -6,7 +6,7 @@
         <input type="text" ng-model="search" placeholder="filter"/>
       </div>
       <div class="logout" ng-click="logout()">
-        <a href="">logout</a> <!-- -->
+        <button><a href="">logout</a></button>
       </div>
     </div>
     <div class="individualBookmark" ng-repeat="bookmark in data.bookmarks | filter:search | orderBy:'created_at'">
@@ -18,5 +18,27 @@
         </a>
       </div>
     </div>
+
+     <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="btn-group">   
+              <button class="btn btn-default">
+                Categories
+              </button> 
+              <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a href="#">News</a></li>
+                <li><a href="#">Shopping</a></li>
+                <li><a href="#">Coding</a></li>
+                <li><a href="#">Random Crap</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
   </div>
 </div>
