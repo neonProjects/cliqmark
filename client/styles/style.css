@@ -59,6 +59,9 @@ h1 {
   margin: 10px;
 }
 
+#login {
+  margin-top: 75px;
+}
 .ng-scope {
   background-color: #F1F1F1;
 }
