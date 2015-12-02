@@ -1,26 +1,13 @@
 {
-
-  "name": "cliqmark plugin",
-  "description": "bookmark manager",
-  "version": "1.0",
-
-  "permissions": [
-   "tabs",
-   "storage",
-   "<all_urls>"
-  ],
-
-  "browser_action": {
-   "default_icon": "icon.png",
-   "default_popup": "popup.html"
+  "name": "CliqMark V2",
+  "description": "sample",
+  "version": "0.0.1",
+  "permissions": ["contextMenus"],
+  "background": {
+    "scripts": ["background.js"]
   },
-
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["bookmark.js"]
-    }
-  ],
-
+  "icons": {
+    "128": "hand-click.png"
+  },
   "manifest_version": 2
 }

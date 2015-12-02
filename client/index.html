@@ -10,6 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="../cliqmark-extension/menu.js"></script>
   </head>
   <body>
       <div class="header">
@@ -18,7 +19,7 @@
         </div>
       </div>
 
-     
+
 
         <!-- templates will be loaded here when naviagted to -->
         <div ng-view></div>
@@ -31,10 +32,21 @@
         <script src="app/bookmarks/bookmarks.js"></script>
         <script src="app/services/services.js"></script>
         <script src="app/app.js"></script>
+        <script>
+          if (window.addEventListener) {
+            // Normal browsers
+            window.addEventListener("storage", handler, false);
+          }
+
+          function handler(e) {
+            console.log('Successfully communicate with other tab');
+            console.log('Received data: ' + localStorage.getItem('data'));
+          }
+
+        </script>
 
 
 
 
-      
   </body>
 </html>
