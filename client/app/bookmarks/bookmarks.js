@@ -6,6 +6,8 @@ angular.module('cliqmark.bookmarks', [])
     Bookmarks.getData()
       .then(function(data) {
         $scope.data.bookmarks = data;
+        //console.log("this is data",data);
+       
       })
       .catch(function(err) {
         console.log(err);
@@ -16,7 +18,9 @@ angular.module('cliqmark.bookmarks', [])
     $window.localStorage.removeItem('cliqmark_user');
     $window.localStorage.removeItem('cliqmark_token');
     $location.path('/login');
-  }
+  };
+
+
 
   $scope.getBookmarks();
 
