@@ -30,6 +30,9 @@ angular.module('cliqmark.services', [])
     // addBookmark: addBookmark
   };
 })
+.factory('Recommendations', function($http, $location) {
+  
+})
 
 .factory('Auth', function ($http, $location, $window) {
   // todo
@@ -109,5 +112,3 @@ angular.module('cliqmark.services', [])
         }
     };
 })
- 
-    
