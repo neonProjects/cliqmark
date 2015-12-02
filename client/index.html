@@ -33,18 +33,11 @@
         <script src="app/services/services.js"></script>
         <script src="app/app.js"></script>
         <script>
-          if (window.addEventListener) {
-            // Normal browsers
-            window.addEventListener("storage", handler, false);
-          }
-
-          function handler(e) {
-            console.log('Successfully communicate with other tab');
-            console.log('Received data: ' + localStorage.getItem('data'));
-          }
-
+        console.log('ahhhh')
+          var id = "hocnlpkfhmjbcefjmjoebihfijmgnnem";
+          chrome.runtime.sendMessage(id, { messageFromWeb: window.localStorage }, function (response) {
+          });
         </script>
-
 
 
 
