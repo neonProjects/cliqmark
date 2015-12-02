@@ -78,4 +78,6 @@ angular.module('cliqmark.services', [])
     signup: signup,
     isAuth: isAuth,
   };
-});
+})
+ 
+    

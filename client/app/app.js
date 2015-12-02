@@ -3,6 +3,8 @@ var app = angular.module('cliqmark', [
     'cliqmark.bookmarks',
     'cliqmark.auth',
     'cliqmark.services',
+    'cliqmark.directives',
+    'cliqmark.notes',
     'ngRoute'
   ]);
 
@@ -25,6 +27,13 @@ app.config(function($routeProvider, $httpProvider) {
       templateUrl: 'app/auth/signup.html',
       controller: 'AuthController'
     })
+    .when('/notes', {
+      templateUrl: 'app/bookmarks/notes.html',
+      controller: 'NotebookCtrl'
+    })
+
+    
+
     .otherwise({
       redirectTo: '/bookmarks'
     });
@@ -44,7 +53,7 @@ app.config(function($routeProvider, $httpProvider) {
       $location.path('/login');
     }
   });
-});
+})
 
 
 
