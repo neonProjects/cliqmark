@@ -2,12 +2,22 @@
 <div id="container">
   <div class="bookmarkslist" ng-controller="BookmarksController">
     <div class="searchLogout">
-      <div class="searchbar">
-        <input type="text" ng-model="search" placeholder="filter"/>
-      </div>
-      <div class="logout" ng-click="logout()">
-        <button><a href="">logout</a></button>
-      </div>
+
+
+      <form id='filter' ng-submit='login()'>
+        <h3>Bookmarks </h3>
+        <div class="form-group row">
+          <div class="searchbar col-sm-4">
+            <input type="text" ng-model='search' class="form-control" placeholder="Filter Bookmarks">
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="logout col-sm-offset-2 col-sm-10" ng-click="logout()">
+            <button type="submit" class="logout-btn btn btn-warning btn-md">Logout</button>
+          </div>
+        </div>
+      </form>
+
     </div>
     <div class="individualBookmark" ng-repeat="bookmark in data.bookmarks | filter:search | orderBy:'created_at'">
       <div class="info">
@@ -19,26 +29,6 @@
       </div>
     </div>
 
-     <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="btn-group">   
-              <button class="btn btn-default">
-                Categories
-              </button> 
-              <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu">
-                <li><a href="#">News</a></li>
-                <li><a href="#">Shopping</a></li>
-                <li><a href="#">Coding</a></li>
-                <li><a href="#">Random Crap</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
 
-  </div>
-</div>
+  </div> <!-- End of bookmarkslist -->
+</div>  <!-- End of container -->
