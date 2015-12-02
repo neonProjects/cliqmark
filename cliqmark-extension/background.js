@@ -1,3 +1,10 @@
+var user;
+chrome.runtime.onMessageExternal.addListener(function(request, sender, sendResponse) {
+  if (request.messageFromWeb.cliqmark_user) {
+    console.log(request.messageFromWeb);
+    user = request.messageFromWeb.cliqmark_user
+  }
+});
 
 var addBookmark = function(info, tab){
   console.log('info: ', info, 'tab: ', tab)
@@ -7,12 +14,13 @@ var addBookmark = function(info, tab){
 
   // send the collected data as JSON
   // todo: need real authentication mechanism, hard-coded user here
-  xhr.send(JSON.stringify({ userId: 1, url: tab.url }));
+  xhr.send(JSON.stringify({ userId: user, url: tab.url }));
   xhr.onloadend = function () {
 
   };
 
 }
+
 
 
 chrome.contextMenus.create({

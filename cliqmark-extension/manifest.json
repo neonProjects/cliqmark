@@ -2,12 +2,19 @@
   "name": "CliqMark V2",
   "description": "sample",
   "version": "0.0.1",
-  "permissions": ["contextMenus"],
   "background": {
     "scripts": ["background.js"]
   },
   "icons": {
     "128": "hand-click.png"
+  },
+  "permissions": [
+    "*://localhost/*",
+    "contextMenus"
+  ],
+  "externally_connectable": {
+  "matches": [
+      "*://localhost/*"]
   },
   "manifest_version": 2
 }
