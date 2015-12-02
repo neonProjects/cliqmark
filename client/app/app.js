@@ -3,8 +3,6 @@ var app = angular.module('cliqmark', [
     'cliqmark.bookmarks',
     'cliqmark.auth',
     'cliqmark.services',
-    'cliqmark.directives',
-    'cliqmark.notes',
     'ngRoute'
   ]);
 
@@ -27,10 +25,7 @@ app.config(function($routeProvider, $httpProvider) {
       templateUrl: 'app/auth/signup.html',
       controller: 'AuthController'
     })
-    .when('/notes', {
-      templateUrl: 'app/bookmarks/notes.html',
-      controller: 'NotebookCtrl'
-    })
+ 
 
     
 
@@ -54,6 +49,61 @@ app.config(function($routeProvider, $httpProvider) {
     }
   });
 })
+
+.directive('myNotebook', function () {
+    return {
+        restrict:"E",
+        scope:{
+            notes:'=',
+            ondelete:'&'
+        },
+        templateUrl:"app/bookmarks/boookmarks.html",
+        controller:function ($scope, $attrs) {
+            $scope.deleteNote = function (id) {
+                $scope.ondelete({id:id});
+            }
+        }
+    };
+})
+.directive('myNote', function () {
+    return {
+        restrict:'E',
+        scope:{
+            delete:'&',
+            note:'='
+        },
+        link:function (scope, element, attrs) {
+            var $el = $(element);
+
+            $el.hide().fadeIn('slow');
+
+            $('.thumbnails').sortable({
+                placeholder:"ui-state-highlight", forcePlaceholderSize:true
+            });
+        }
+    };
+})
+.controller('NotebookCtrl', ['$scope', 'notesService', function ($scope, notesService) {
+    $scope.getNotes = function () {
+        return notesService.notes();
+    };
+
+    $scope.addNote = function (noteTitle) {
+        if(noteTitle != '') {
+            notesService.addNote(noteTitle);
+            console.log("i am title");
+        }
+    };
+
+    $scope.deleteNote = function (id) {
+        notesService.deleteNote(id);
+        console.log("i am deleting!");
+    };
+    
+    $scope.resetForm = function() {
+        $scope.noteTitle = '';            
+    };
+}]);
 
 
 

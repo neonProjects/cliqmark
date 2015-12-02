@@ -93,8 +93,8 @@ exports.getPageSnapshot = function(url, snapshotPath) {
       easyimg.resize({
         src:snapshotPath + '.1280.png',
         dst:snapshotPath,
-        width:400,
-        height:400
+        width:300,
+        height:00
       })
       .then(function(image) {
         console.log('Resized and cropped: ' + image.width + ' x ' + image.height);
