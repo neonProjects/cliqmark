@@ -22,9 +22,9 @@ exports.getImage = function(req, res) {
   };
 
   var fileName = req.params.code;
-  console.log(fileName);
+  console.log('filename: ',fileName);
 
-  res.sendFile(fileName, options, function (err) {
+  res.sendFile(fileName + '.org.png', options, function (err) {
     if (err) {
       console.log('error');
       res.sendFile('no_screenshot.png', options);
@@ -61,8 +61,8 @@ exports.getBookmarks = function(req, res) {
   console.log('userId: ', userId)
   db.getBookmarks(userId, function(err, bookmarks) {
     if (err) {
-      console.log('error gettign bookmark')
-      // res.status(401).send(err);
+      // console.log('error gettign bookmark')
+      res.status(401).send(err);
     } else {
       res.status(200).send(bookmarks);
     }
@@ -77,7 +77,7 @@ exports.addBookmark = function(req, res) {
   console.log(userId);
 
   if (!url) { return res.status(401).send('no url'); }
-  if (!url) { return res.status(401).send('no user'); }
+  if (!userId) { return res.status(401).send('no user'); }
 
   if (!util.isValidUrl(url)) {
     console.log('Not a valid url: ', url);
