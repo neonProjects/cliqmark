@@ -25,6 +25,10 @@ app.config(function($routeProvider, $httpProvider) {
       templateUrl: 'app/auth/signup.html',
       controller: 'AuthController'
     })
+ 
+
+    
+
     .otherwise({
       redirectTo: '/bookmarks'
     });
@@ -44,7 +48,62 @@ app.config(function($routeProvider, $httpProvider) {
       $location.path('/login');
     }
   });
-});
+})
+
+.directive('myNotebook', function () {
+    return {
+        restrict:"E",
+        scope:{
+            notes:'=',
+            ondelete:'&'
+        },
+        templateUrl:"app/bookmarks/boookmarks.html",
+        controller:function ($scope, $attrs) {
+            $scope.deleteNote = function (id) {
+                $scope.ondelete({id:id});
+            }
+        }
+    };
+})
+.directive('myNote', function () {
+    return {
+        restrict:'E',
+        scope:{
+            delete:'&',
+            note:'='
+        },
+        link:function (scope, element, attrs) {
+            var $el = $(element);
+
+            $el.hide().fadeIn('slow');
+
+            $('.thumbnails').sortable({
+                placeholder:"ui-state-highlight", forcePlaceholderSize:true
+            });
+        }
+    };
+})
+.controller('NotebookCtrl', ['$scope', 'notesService', function ($scope, notesService) {
+    $scope.getNotes = function () {
+        return notesService.notes();
+    };
+
+    $scope.addNote = function (noteTitle) {
+        if(noteTitle != '') {
+            notesService.addNote(noteTitle);
+            console.log("i am title");
+        }
+    };
+
+    $scope.deleteNote = function (id) {
+        notesService.deleteNote(id);
+        console.log("i am deleting!");
+    };
+    
+    $scope.resetForm = function() {
+        $scope.noteTitle = '';            
+    };
+}]);
 
 
 
