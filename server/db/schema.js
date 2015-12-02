@@ -158,6 +158,23 @@ exports.removeBookmark = function(bookmarkId, callback) {
   });
 };
 
+
+//get tagId from bookmarked site
+exports.findTags = function() {
+  
+};
+
+//find recommendations for recently bookmarked site based on tagId
+exports.findRecs = function(tagId, bookmarkId, callback) {
+  Tag.findOne({ where: {tagName: tagName} })
+  var query = "SELECT tagId FROM BookmarkTags WHERE bookmarkId = " + bookmarkId + " AND tagId = " + tagId + ";";
+
+  sequelize.query(query).spread(function(results) {
+    callback();
+  });
+
+};
+
 //finds or creates a tag, and adds a join to the bookmark ID
 exports.addTag = function(tagName, bookmarkId, callback) {
   Bookmark.findOne({ where: { id: bookmarkId } })
