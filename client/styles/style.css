@@ -1,11 +1,14 @@
 body {
   margin: 0;
   margin-top: 10px;
+  background-image: url('https://images.unsplash.com/38/awhCbhLqRceCdjcPQUnn_IMG_0249.jpg?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&s=ebe2a039b5ac7f82559a7d0597872111');
+  background-size: 1280px 600px;
+    background-repeat: no-repeat;
 }
 
 a {
-  color: #333;
-  font-size: 14px;
+  color: #eee;
+  font-size: 16px;
   text-decoration: none;
 }
 
@@ -42,6 +45,20 @@ h1 {
   list-style: none;
 
 }
+.logout-btn{
+  margin-left: 18px;
+}
+.signup-btn, .login-btn {
+  background-color: #163A5E;
+  border-color: #163A5E;
+  padding: 10px 55px;
+  color: #fff;
+  margin-left: -100px;
+}
+.signup-btn:hover, .login-btn:hover {
+  background-color: #21496D;
+  color: #eee;
+}
 
 .header .logout:hover {
   font-color: 'red';
@@ -49,7 +66,8 @@ h1 {
 
 #container {
   clear: both;
-  margin-top: 10px;
+  margin-top: 75px;
+
 }
 
 .bookmarkslist {
@@ -57,10 +75,15 @@ h1 {
   position: relative;
   padding: 30px;
   margin: 10px;
+  color: #fff;
 }
 
+#login {
+  margin-top: 75px;
+  color: #fff;
+}
 .ng-scope {
-  background-color: #F1F1F1;
+  /*background: #F1F1F1;*/
 }
 
 .individualBookmark {
