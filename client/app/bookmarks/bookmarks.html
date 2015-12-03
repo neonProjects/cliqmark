@@ -31,36 +31,8 @@
     </div>
   </div> <!-- End of bookmarkslist -->
 
-  <div ng-app="cliqmark">
-    <script type="text/ng-template" id="app/bookmarks/boookmarks.html">
-    <ul class="thumbnails">
-        <li ng-repeat="note in notes">
-            <my-note class="span2 thumbnail" delete="deleteNote(id)" note="note">
-                <button class="btn btn-large close pull-right" ng-click="delete()">&times;</button>
-                <hr/>
-                <p>{{note.title}}</p>
-            </my-note>
-        </li>
-    </ul>
-    </script>
 
-    <div ng-controller="NotebookCtrl">
 
-            <h4>Add notes or reminders</h4>
-
-        <div class="form-actions">
-            <div class="input-append">
-                <form ng-submit="addNote(noteTitle);resetForm();">
-                    <input class="span3" ng-model="noteTitle" size="16" type="text" placeholder="Add a note">
-                    <button class="btn btn-success" type="button"
-                        ng-disabled="!noteTitle" ng-click="addNote(noteTitle);resetForm();">Add Note
-                    </button>
-                </form>
-            </div>
-        </div>
-        <my-notebook notes="getNotes()" ondelete="deleteNote(id)"></my-notebook>
-    </div>
-  </div>
 
 
 </div>  <!-- End of container -->
