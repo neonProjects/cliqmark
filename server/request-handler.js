@@ -72,15 +72,7 @@ exports.getBookmarks = function(req, res) {
 exports.addBookmark = function(req, res) {
   var url = req.body.url;
   var userId = req.body.userId;
-<<<<<<< HEAD
-  // console.log('taxonomy: ', taxonomyResult)
-=======
-  var taxonomyResult = util.taxonomy(url);
 
-  console.log("I AM LOGGING TAXONOMYRESULT", taxonomyResult);
-  console.log('taxonomy: ', taxonomyResult)
-
->>>>>>> 874fa35576a5f1f44defe2814b71f959067676e9
   console.log('url: ',url);
   // console.log(userId);
 
