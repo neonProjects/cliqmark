@@ -73,7 +73,11 @@ exports.addBookmark = function(req, res) {
   var url = req.body.url;
   var userId = req.body.userId;
   var taxonomyResult = util.taxonomy(url);
+<<<<<<< HEAD
   console.log("I AM LOGGING TAXONOMYRESULT", taxonomyResult);
+=======
+  console.log('taxonomy: ', taxonomyResult)
+>>>>>>> 6fc587cd5cf49964039f2e2dac68e3cfad858cbc
   console.log('url: ',url);
   console.log(userId);
 
@@ -122,8 +126,10 @@ exports.addTag = function(req, res, tagName, bookmarkId) {
 
   db.addTag(tagName, bookmarkId, function(err, tagId) {
     if (err) {
+      console.log('add tagggggg')
       res.status(401).send(err);
     } else {
+
       var bmTag = {
         bookmarkId: bookmarkId,
         tagId: tagId
