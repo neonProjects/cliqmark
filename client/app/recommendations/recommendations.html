@@ -1,0 +1,30 @@
+<div id="container">
+  <div class="bookmarkslist" ng-controller="RecommendationCtrl">
+    <div class="searchLogout">
+
+          <!-- todo: Add link to bookmarks page -->
+      <form id='filter' ng-submit='login()'>
+        <h3>Your Recommendations</h3>
+        <div class="form-group row">
+          <div class="searchbar col-sm-4">
+            <input type="text" ng-model='search' class="form-control" placeholder="Filter Bookmarks">
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="logout col-sm-offset-2 col-sm-10" ng-click="logout()">
+            <button type="submit" class="logout-btn btn btn-warning btn-md">Logout</button>
+          </div>
+        </div>
+      </form>
+
+    </div>
+    <div class="individualBookmark" ng-repeat="bookmark in data.bookmarks | filter:search | orderBy:'created_at'">
+      <div class="info">
+        <a href="{{bookmark.url}}" target="_blank">
+          <!--todo: fix this hard coding -->
+          <span class="title">{{bookmark.title || bookmark.url.slice(7)}}</span>
+          <img class="snapshot" src="api/bookmarks/{{bookmark.snapshotUrl}}" />
+        </a>
+      </div>
+    </div>
+  </div> <!-- End of bookmarkslist -->

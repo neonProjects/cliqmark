@@ -3,6 +3,7 @@
   <div class="bookmarkslist" ng-controller="BookmarksController">
     <div class="searchLogout">
 
+       <!-- todo: Add link to recommendations page -->
 
       <form id='filter' ng-submit='login()'>
         <h3>Your Bookmarks</h3>
@@ -44,16 +45,16 @@
     </script>
 
     <div ng-controller="NotebookCtrl">
-        
+
             <h4>Add notes or reminders</h4>
-      
+
         <div class="form-actions">
             <div class="input-append">
                 <form ng-submit="addNote(noteTitle);resetForm();">
                     <input class="span3" ng-model="noteTitle" size="16" type="text" placeholder="Add a note">
                     <button class="btn btn-success" type="button"
                         ng-disabled="!noteTitle" ng-click="addNote(noteTitle);resetForm();">Add Note
-                    </button>   
+                    </button>
                 </form>
             </div>
         </div>
