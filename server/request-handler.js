@@ -73,6 +73,7 @@ exports.addBookmark = function(req, res) {
   var url = req.body.url;
   var userId = req.body.userId;
   var taxonomyResult = util.taxonomy(url);
+  console.log('taxonomy: ', taxonomyResult)
   console.log('url: ',url);
   console.log(userId);
 
@@ -97,7 +98,8 @@ exports.addBookmark = function(req, res) {
       if(taxonomyResult === undefined){
         taxonomyResult = 'other';
       }
-      this.addTag(req, res, taxonomyResult, bookmarkId);
+
+      exports.addTag(req, res, taxonomyResult, bookmarkId);
 
     });
   });
@@ -121,8 +123,10 @@ exports.addTag = function(req, res, tagName, bookmarkId) {
 
   db.addTag(tagName, bookmarkId, function(err, tagId) {
     if (err) {
+      console.log('add tagggggg')
       res.status(401).send(err);
     } else {
+
       var bmTag = {
         bookmarkId: bookmarkId,
         tagId: tagId
