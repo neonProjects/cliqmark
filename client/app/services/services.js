@@ -31,7 +31,8 @@ angular.module('cliqmark.services', [])
   };
 })
 .factory('Recommendations', function($http, $location) {
-  
+  //create a getRecs function
+  //
 })
 
 .factory('Auth', function ($http, $location, $window) {
