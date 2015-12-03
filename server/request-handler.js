@@ -73,6 +73,7 @@ exports.addBookmark = function(req, res) {
   var url = req.body.url;
   var userId = req.body.userId;
   var taxonomyResult = util.taxonomy(url);
+  console.log("I AM LOGGING TAXONOMYRESULT", taxonomyResult);
   console.log('url: ',url);
   console.log(userId);
 
@@ -97,7 +98,7 @@ exports.addBookmark = function(req, res) {
       if(taxonomyResult === undefined){
         taxonomyResult = 'other';
       }
-      this.addTag(req, res, taxonomyResult, bookmarkId);
+      exports.addTag(req, res, taxonomyResult, bookmarkId);
 
     });
   });
