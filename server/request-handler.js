@@ -72,7 +72,7 @@ exports.getBookmarks = function(req, res) {
 exports.addBookmark = function(req, res) {
   var url = req.body.url;
   var userId = req.body.userId;
-
+  var taxonomyResult = util.taxonomy(url);
   console.log('url: ',url);
   console.log(userId);
 
@@ -94,6 +94,11 @@ exports.addBookmark = function(req, res) {
         page.id = bookmarkId;
         res.status(200).send(page);
       }
+      if(taxonomyResult === undefined){
+        taxonomyResult = 'other';
+      }
+      this.addTag(req, res, taxonomyResult, bookmarkId);
+
     });
   });
 };
@@ -111,10 +116,8 @@ exports.deleteBookmark = function(req, res) {
   });
 };
 
-exports.addTag = function(req, res) {
+exports.addTag = function(req, res, tagName, bookmarkId) {
   //todo: add this functionality to client
-  var tagName = req.body.tagName;
-  var bookmarkId = req.body.bookmarkId;
 
   db.addTag(tagName, bookmarkId, function(err, tagId) {
     if (err) {

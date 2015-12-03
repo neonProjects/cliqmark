@@ -25,6 +25,6 @@ angular.module('cliqmark.bookmarks', [])
   $scope.getBookmarks();
 
 
-  setInterval($scope.getBookmarks, 5000);
+  setInterval($scope.getBookmarks, 15000);
 
 });
