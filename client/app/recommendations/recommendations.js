@@ -4,8 +4,8 @@ angular.module('cliqmark.recommendations', [])
   $scope.data = {};
 
   $scope.getRecs= function() {
-    //query bookmarks with certain tag
-    //check BookmarkTags table for tags
+    //call getRecs from from Recommendations factory
+    //set $scope.data.recs = data;
 
 
   };
