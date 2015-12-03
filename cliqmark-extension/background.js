@@ -1,7 +1,10 @@
 var user;
+//listen for message from app's index page
 chrome.runtime.onMessageExternal.addListener(function(request, sender, sendResponse) {
+  //this will only be sent if user is logged in
   if (request.messageFromWeb.cliqmark_user) {
     console.log(request.messageFromWeb);
+    //assign user the userId
     user = request.messageFromWeb.cliqmark_user
   }
 });
@@ -12,8 +15,8 @@ var addBookmark = function(info, tab){
   xhr.open('POST', 'http://0.0.0.0:3000/api/addBookmark', true);
   xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 
-  // send the collected data as JSON
-  // todo: need real authentication mechanism, hard-coded user here
+  // send the collected data as JSON with individual userID
+
   xhr.send(JSON.stringify({ userId: user, url: tab.url }));
   xhr.onloadend = function () {
 
@@ -22,7 +25,7 @@ var addBookmark = function(info, tab){
 }
 
 
-
+//creates right-clickable menu item
 chrome.contextMenus.create({
    title: "CliqMark This Page",
    contexts:["all"],  // ContextType

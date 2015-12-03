@@ -17,6 +17,16 @@ var User = sequelize.define('users', {
   password: Sequelize.STRING
 });
 
+//collections table for user boards
+var Collection = sequelize.define('collections', {
+  title: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    unique: true
+  }
+});
+
+
 //create a Bookmarks table
 var Bookmark = sequelize.define('bookmarks', {
   title: Sequelize.STRING,
@@ -52,6 +62,9 @@ Bookmark.belongsTo(User);
 //Bookmarks have many tags, and tags have many bookmarks
 Bookmark.belongsToMany(Tag, { through: "BookmarkTags" });
 Tag.belongsToMany(Bookmark, { through: "BookmarkTags" });
+
+//collection has many bookmarks, bookmarks can belong in different collections
+
 
 //create the tables if they don't exist
 sequelize.sync();
