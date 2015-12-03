@@ -137,8 +137,8 @@ exports.createBookmark = function(userId, title, url, snapshotUrl, baseUrl, text
     }
   }).spread(function(bookmark, created) {
     if (created) {
-      console.log('booookkkkkkkk: ', bookmark)
-      callback(null, bookmark.bookmarkId);
+      console.log('booookkkkkkkk: ', bookmark.dataValues.id)
+      callback(null, bookmark.dataValues.id);
     } else {
       callback("You've already bookmarked this page.");
     }
