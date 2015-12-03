@@ -83,10 +83,10 @@ exports.addBookmark = function(req, res) {
     console.log('Not a valid url: ', url);
     return res.status(404).send('Not a valid URL');
   }
+    util.taxonomy(url);
 
   util.getPageInfo(url, function(page) {
     util.getPageSnapshot(url, config.shotpath + page.snapshot);
-
     db.createBookmark(userId, page.title, page.url, page.snapshot, '', page.text, function(err, bookmarkId){
       if (err) {
         res.status(401).send(err);

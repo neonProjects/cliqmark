@@ -136,6 +136,17 @@ exports.createSession = function(req, res, newUser) {
     });
 };
 
-exports.taxonomy = function(req,res){
-  
+exports.taxonomy = function(url){
+  alchemyapi.taxonomy('url', url, {}, function(response){
+    var arr = response.taxonomy;
+    //array of objects
+    for(var i = 0; i < arr.length; i++){
+      //score is a string
+      if(arr[i]['score'] >= 0.75){
+        //get string between first 2 '/'
+        var label = arr[i]['label'].match(/\/(.+?)(?=\/)/)[1]
+        console.log('label ',label)
+      }
+    }
+  })
 }
