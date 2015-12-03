@@ -2,7 +2,7 @@ body {
   margin: 0;
   margin-top: 10px;
   background-image: url('https://images.unsplash.com/38/awhCbhLqRceCdjcPQUnn_IMG_0249.jpg?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&s=ebe2a039b5ac7f82559a7d0597872111');
-  background-size: 1280px 600px;
+  background-size: 100% 100%;
     background-repeat: no-repeat;
 }
 
@@ -99,6 +99,10 @@ h1 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.individualBookmark a {
+  color: #000;
+  text-decoration: none;
 }
 
 .title {
