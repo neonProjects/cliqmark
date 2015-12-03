@@ -1,7 +1,9 @@
 var user;
 //listen for message from app's index page
+console.log("hello error 1");
 chrome.runtime.onMessageExternal.addListener(function(request, sender, sendResponse) {
   //this will only be sent if user is logged in
+  console.log("hello error");
   if (request.messageFromWeb.cliqmark_user) {
     console.log(request.messageFromWeb);
     //assign user the userId

@@ -138,15 +138,17 @@ exports.createSession = function(req, res, newUser) {
 
 exports.taxonomy = function(url){
   alchemyapi.taxonomy('url', url, {}, function(response){
+
+    //console.log('taxonomy: ', response.taxonomy);
     var arr = response.taxonomy;
-    //array of objects
+    console.log("THIS IS ARRAY", arr);
     for(var i = 0; i < arr.length; i++){
-      //score is a string
-      if(arr[i]['score'] >= 0.75){
-        //get string between first 2 '/'
-        var label = arr[i]['label'].match(/\/(.+?)(?=\/)/)[1]
-        console.log('label ',label)
+      if((arr[i]['score']) >= 0.75){
+        return arr[i]['label'].match(/\/(.+?)(?=\/)/)[1];
+        //console.log(arr[0]['label'].match(/\/(.+?)(?=\/)/));
+
       }
     }
+
   })
 }
