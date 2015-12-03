@@ -4,9 +4,12 @@ var md5 = require('md5');
 var urlToImage = require('url-to-image');
 var easyimg = require('easyimage');
 var sanitizeHtml = require('sanitize-html');
+var Promise = require('bluebird');
 //Create the AlchemyAPI object
 var AlchemyAPI = require('./alchemyapi');
 var alchemyapi = new AlchemyAPI();
+var alch = Promise.promisifyAll(alchemyapi);
+
 
 
 var rValidUrl = /^(?!mailto:)(?:(?:https?|ftp):\/\/)?(?:\S+(?::\S*)?@)?(?:(?:(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[0-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))|localhost)(?::\d{2,5})?(?:\/[^\s]*)?$/i;
@@ -136,15 +139,18 @@ exports.createSession = function(req, res, newUser) {
     });
 };
 
+
 exports.taxonomy = function(url){
-  alchemyapi.taxonomy('url', url, {}, function(response){
+  var result;
+  console.log('alch: ',alch)
+  return alch.taxonomyAsync('url', url, {}).then(function(response){
 
     //console.log('taxonomy: ', response.taxonomy);
     var arr = response.taxonomy;
-    console.log("THIS IS ARRAY", arr);
     for(var i = 0; i < arr.length; i++){
       if((arr[i]['score']) >= 0.75){
         return arr[i]['label'].match(/\/(.+?)(?=\/)/)[1];
+
         //console.log(arr[0]['label'].match(/\/(.+?)(?=\/)/));
 
       }
