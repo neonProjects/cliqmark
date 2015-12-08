@@ -25,6 +25,10 @@ app.config(function($routeProvider, $httpProvider) {
       templateUrl: 'app/auth/signup.html',
       controller: 'AuthController'
     })
+ 
+
+    
+
     .otherwise({
       redirectTo: '/bookmarks'
     });
@@ -44,7 +48,9 @@ app.config(function($routeProvider, $httpProvider) {
       $location.path('/login');
     }
   });
-});
+})
+
+
 
 
 

@@ -1,18 +1,20 @@
 {
-
-  "name": "cliqmark plugin",
-  "description": "bookmark manager",
-  "version": "1.0",
-
-  "permissions": [
-   "tabs",
-   "storage"
-  ],
-
-  "browser_action": {
-   "default_icon": "icon.png",
-   "default_popup": "popup.html"
+  "name": "CliqMark V2",
+  "description": "sample",
+  "version": "0.0.1",
+  "background": {
+    "scripts": ["background.js"]
   },
-
+  "icons": {
+    "128": "hand-click.png"
+  },
+  "permissions": [
+    "*://localhost/*",
+    "contextMenus"
+  ],
+  "externally_connectable": {
+  "matches": [
+      "*://localhost/*"]
+  },
   "manifest_version": 2
 }

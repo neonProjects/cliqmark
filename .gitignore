@@ -1,3 +1,4 @@
 node_modules/
 queries.paw
 server/shots/
+.DS_Store

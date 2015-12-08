@@ -22,11 +22,11 @@ exports.getImage = function(req, res) {
   };
 
   var fileName = req.params.code;
-  console.log(fileName);
+  console.log('filename: ',fileName);
 
-  res.sendFile(fileName, options, function (err) {
+  res.sendFile(fileName + '.org.png', options, function (err) {
     if (err) {
-      console.log(err);
+      console.log('error');
       res.sendFile('no_screenshot.png', options);
     }
     else {
@@ -58,9 +58,10 @@ exports.logoutUser = function(req, res) {
 exports.getBookmarks = function(req, res) {
 
   var userId = req.query.userId;
-
+  console.log('userId: ', userId)
   db.getBookmarks(userId, function(err, bookmarks) {
     if (err) {
+      // console.log('error gettign bookmark')
       res.status(401).send(err);
     } else {
       res.status(200).send(bookmarks);
@@ -72,11 +73,11 @@ exports.addBookmark = function(req, res) {
   var url = req.body.url;
   var userId = req.body.userId;
 
-  console.log(url);
-  console.log(userId);
+  console.log('url: ',url);
+  // console.log(userId);
 
   if (!url) { return res.status(401).send('no url'); }
-  if (!url) { return res.status(401).send('no user'); }
+  if (!userId) { return res.status(401).send('no user'); }
 
   if (!util.isValidUrl(url)) {
     console.log('Not a valid url: ', url);
@@ -87,12 +88,16 @@ exports.addBookmark = function(req, res) {
     util.getPageSnapshot(url, config.shotpath + page.snapshot);
 
     db.createBookmark(userId, page.title, page.url, page.snapshot, '', page.text, function(err, bookmarkId){
+      console.log('urllllll: ',page.id)
       if (err) {
         res.status(401).send(err);
       } else {
         page.id = bookmarkId;
         res.status(200).send(page);
       }
+
+      util.taxonomy(req,res,page.url,bookmarkId)
+
     });
   });
 };
@@ -110,15 +115,15 @@ exports.deleteBookmark = function(req, res) {
   });
 };
 
-exports.addTag = function(req, res) {
+exports.addTag = function(req, res, tagName, bookmarkId) {
   //todo: add this functionality to client
-  var tagName = req.body.tagName;
-  var bookmarkId = req.body.bookmarkId;
 
   db.addTag(tagName, bookmarkId, function(err, tagId) {
     if (err) {
+      console.log('add tagggggg')
       res.status(401).send(err);
     } else {
+
       var bmTag = {
         bookmarkId: bookmarkId,
         tagId: tagId
@@ -190,4 +195,3 @@ exports.signupUser = function(req, res) {
     }
   });
 };
-

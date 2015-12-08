@@ -2,12 +2,23 @@
 <div id="container">
   <div class="bookmarkslist" ng-controller="BookmarksController">
     <div class="searchLogout">
-      <div class="searchbar">
-        <input type="text" ng-model="search" placeholder="filter"/>
-      </div>
-      <div class="logout" ng-click="logout()">
-        <a href="">logout</a> <!-- -->
-      </div>
+
+       <!-- todo: Add link to recommendations page -->
+
+      <form id='filter' ng-submit='login()'>
+        <h3>Your Bookmarks</h3>
+        <div class="form-group row">
+          <div class="searchbar col-sm-4">
+            <input type="text" ng-model='search' class="form-control" placeholder="Filter Bookmarks">
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="logout col-sm-offset-2 col-sm-10" ng-click="logout()">
+            <button type="submit" class="logout-btn btn btn-warning btn-md">Logout</button>
+          </div>
+        </div>
+      </form>
+
     </div>
     <div class="individualBookmark" ng-repeat="bookmark in data.bookmarks | filter:search | orderBy:'created_at'">
       <div class="info">
@@ -18,5 +29,10 @@
         </a>
       </div>
     </div>
-  </div>
-</div>
+  </div> <!-- End of bookmarkslist -->
+
+
+
+
+
+</div>  <!-- End of container -->

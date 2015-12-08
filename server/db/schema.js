@@ -3,7 +3,7 @@ var Sequelize = require('sequelize');
 // empty database should be created manually in mysql. MUST DO THIS FIRST
 // server will create tables on first run, but empty DB needs to have been created
 // this also assumes username is root without password
-var sequelize = new Sequelize('cliqmark', 'root', null, {});
+var sequelize = new Sequelize('test', 'root', null, {});
 var Promise = require('bluebird');
 var bcrypt = require('bcrypt-nodejs');
 
@@ -16,6 +16,16 @@ var User = sequelize.define('users', {
   },
   password: Sequelize.STRING
 });
+
+//collections table for user boards
+var Collection = sequelize.define('collections', {
+  title: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    unique: true
+  }
+});
+
 
 //create a Bookmarks table
 var Bookmark = sequelize.define('bookmarks', {
@@ -52,6 +62,9 @@ Bookmark.belongsTo(User);
 //Bookmarks have many tags, and tags have many bookmarks
 Bookmark.belongsToMany(Tag, { through: "BookmarkTags" });
 Tag.belongsToMany(Bookmark, { through: "BookmarkTags" });
+
+//collection has many bookmarks, bookmarks can belong in different collections
+
 
 //create the tables if they don't exist
 sequelize.sync();
@@ -124,7 +137,8 @@ exports.createBookmark = function(userId, title, url, snapshotUrl, baseUrl, text
     }
   }).spread(function(bookmark, created) {
     if (created) {
-      callback(null, bookmark.bookmarkId);
+      console.log('booookkkkkkkk: ', bookmark.dataValues.id)
+      callback(null, bookmark.dataValues.id);
     } else {
       callback("You've already bookmarked this page.");
     }
@@ -158,8 +172,26 @@ exports.removeBookmark = function(bookmarkId, callback) {
   });
 };
 
+
+//get tagId from bookmarked site
+exports.findTags = function() {
+
+};
+
+//find recommendations for recently bookmarked site based on tagId
+exports.findRecs = function(tagId, bookmarkId, callback) {
+  Tag.findOne({ where: {tagName: tagName} })
+  var query = "SELECT tagId FROM BookmarkTags WHERE bookmarkId = " + bookmarkId + " AND tagId = " + tagId + ";";
+
+  sequelize.query(query).spread(function(results) {
+    callback();
+  });
+
+};
+
 //finds or creates a tag, and adds a join to the bookmark ID
 exports.addTag = function(tagName, bookmarkId, callback) {
+  console.log('adding tagggggg')
   Bookmark.findOne({ where: { id: bookmarkId } })
   .then(function(bookmark) {
     if (!bookmark) {

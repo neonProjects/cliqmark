@@ -4,6 +4,14 @@ var md5 = require('md5');
 var urlToImage = require('url-to-image');
 var easyimg = require('easyimage');
 var sanitizeHtml = require('sanitize-html');
+var Promise = require('bluebird');
+//Create the AlchemyAPI object
+var AlchemyAPI = require('./alchemyapi');
+var alchemyapi = new AlchemyAPI();
+
+var alch = Promise.promisifyAll(alchemyapi);
+var handler = require('./request-handler');
+
 
 
 var rValidUrl = /^(?!mailto:)(?:(?:https?|ftp):\/\/)?(?:\S+(?::\S*)?@)?(?:(?:(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[0-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))|localhost)(?::\d{2,5})?(?:\/[^\s]*)?$/i;
@@ -93,8 +101,8 @@ exports.getPageSnapshot = function(url, snapshotPath) {
       easyimg.resize({
         src:snapshotPath + '.1280.png',
         dst:snapshotPath,
-        width:400,
-        height:400
+        width:300,
+        height:00
       })
       .then(function(image) {
         console.log('Resized and cropped: ' + image.width + ' x ' + image.height);
@@ -132,3 +140,25 @@ exports.createSession = function(req, res, newUser) {
       // res.redirect('/');
     });
 };
+
+exports.tag = {}
+
+exports.taxonomy = function(req,res,url, bm){
+
+  console.log('alch: ',alch,'bm: ' ,bm)
+  alchemyapi.taxonomy('url', url, {},function(response){
+
+    console.log('taxonomyAsync: ', response.taxonomy);
+    var arr = response.taxonomy;
+    for(var i = 0; i < arr.length; i++){
+      if((arr[i]['score']) >= 0.75){
+         handler.addTag(req,res,arr[i]['label'].match(/\/(.+?)(?=\/)/)[1],bm);
+         return;
+
+        //console.log(arr[0]['label'].match(/\/(.+?)(?=\/)/));
+
+      }
+    }
+  })
+
+}
